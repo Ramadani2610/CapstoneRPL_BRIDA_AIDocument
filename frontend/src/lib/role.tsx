@@ -1,16 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import type { Dispatch, ReactNode, SetStateAction } from 'react'
-import { ROLES } from '../config/roles'
 
-/*
-  Sumber peran pengguna.
-
-  SEMENTARA (belum ada auth): peran disimpan di localStorage dan bisa diganti
-  lewat tombol di header. Ini cukup untuk pengembangan & demo.
-
-  NANTI saat autentikasi sudah jadi: ganti isi useEffect di bawah dengan
-  pemanggilan API (mis. api.get('/me')), sisanya tidak perlu diubah.
-*/
 const STORAGE_KEY = 'brida.role'
 
 interface RoleContextValue {
@@ -24,17 +14,21 @@ const RoleContext = createContext<RoleContextValue | null>(null)
 export function RoleProvider({ children }: { children: ReactNode }) {
   const [role, setRole] = useState<string>(() => {
     const saved = window.localStorage.getItem(STORAGE_KEY)
-    return saved || ROLES.ADMIN
+    // REVISI: Kosongkan default jika tidak ada data di localStorage (jangan langsung ROLES.ADMIN)
+    return saved || ''
   })
 
   useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, role)
+    if (role) {
+      window.localStorage.setItem(STORAGE_KEY, role)
+    } else {
+      window.localStorage.removeItem(STORAGE_KEY)
+    }
   }, [role])
 
   const value: RoleContextValue = {
     role,
     setRole,
-    // is(ROLES.ADMIN, ROLES.VERIFIKATOR) -> true kalau peran saat ini salah satunya
     is: (...allowed: string[]) => allowed.includes(role),
   }
 
