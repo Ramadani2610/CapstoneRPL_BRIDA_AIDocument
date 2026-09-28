@@ -1,3 +1,4 @@
+
 import { Route, Routes } from 'react-router-dom'
 import AppLayout from './layouts/AppLayout'
 import NotFoundPage from './pages/NotFoundPage'
@@ -26,3 +27,8 @@ export default function App() {
     </Routes>
   )
 }
+
+import Login from './pages/auth/Login';
+
+
+
