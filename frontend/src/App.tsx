@@ -4,10 +4,12 @@ import AppLayout from './layouts/AppLayout'
 import NotFoundPage from './pages/NotFoundPage'
 import { APP_ROUTES, HomeRedirect, RequireRole } from './routes'
 import { navByKey } from './config/navigation'
+import Login from './pages/auth/Login';
 
 export default function App() {
   return (
     <Routes>
+      <Route path="/login" element={<Login />} />
       <Route element={<AppLayout />}>
         <Route index element={<HomeRedirect />} />
 
@@ -27,8 +29,3 @@ export default function App() {
     </Routes>
   )
 }
-
-import Login from './pages/auth/Login';
-
-
-

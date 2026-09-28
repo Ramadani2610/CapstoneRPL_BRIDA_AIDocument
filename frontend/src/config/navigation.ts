@@ -1,7 +1,6 @@
 import { ROLES } from './roles'
 
 /*
-  SATU-SATUNYA sumber kebenaran untuk menu sidebar.
 
   Isi menu diambil dari use case pada SRS:
     Dashboard          -> halaman ringkasan (admin)

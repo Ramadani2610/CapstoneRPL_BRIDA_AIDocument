@@ -13,7 +13,7 @@ function initials(name: string): string {
 
 export default function Topbar() {
   const { role, setRole } = useRole()
-  const profile = DEMO_PROFILE[role]
+  const profile = DEMO_PROFILE[role] ?? { name: 'Pengguna', unit: 'BRIDA Kota Makassar' }
 
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-6">

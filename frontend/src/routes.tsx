@@ -31,6 +31,7 @@ export const APP_ROUTES = [
 // Setiap route dibungkus ini: kalau peran tidak berhak, tampilkan halaman tolak.
 export function RequireRole({ roles, children }: { roles: string[]; children: ReactNode }) {
   const { role } = useRole()
+
   if (!roles.includes(role)) {
     return <AksesDitolakPage allow={roles} />
   }
