@@ -7,11 +7,12 @@ import {
   Users,
 } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
+import type { LucideIcon } from 'lucide-react'
 import { NAV, navForRole } from '../config/navigation'
 import { useRole } from '../lib/role'
 
-// navigation.js menyimpan nama ikon sebagai teks supaya file config bebas dari JSX.
-const ICONS = {
+// navigation.ts menyimpan nama ikon sebagai teks supaya file config bebas dari JSX.
+const ICONS: Record<string, LucideIcon> = {
   AlertTriangle,
   ClipboardList,
   FileText,

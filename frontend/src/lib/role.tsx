@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import { ROLES } from '../config/roles'
 
 /*
@@ -11,10 +12,17 @@ import { ROLES } from '../config/roles'
   pemanggilan API (mis. api.get('/me')), sisanya tidak perlu diubah.
 */
 const STORAGE_KEY = 'brida.role'
-const RoleContext = createContext(null)
 
-export function RoleProvider({ children }) {
-  const [role, setRole] = useState(() => {
+interface RoleContextValue {
+  role: string
+  setRole: Dispatch<SetStateAction<string>>
+  is: (...allowed: string[]) => boolean
+}
+
+const RoleContext = createContext<RoleContextValue | null>(null)
+
+export function RoleProvider({ children }: { children: ReactNode }) {
+  const [role, setRole] = useState<string>(() => {
     const saved = window.localStorage.getItem(STORAGE_KEY)
     return saved || ROLES.ADMIN
   })
@@ -23,17 +31,17 @@ export function RoleProvider({ children }) {
     window.localStorage.setItem(STORAGE_KEY, role)
   }, [role])
 
-  const value = {
+  const value: RoleContextValue = {
     role,
     setRole,
     // is(ROLES.ADMIN, ROLES.VERIFIKATOR) -> true kalau peran saat ini salah satunya
-    is: (...allowed) => allowed.includes(role),
+    is: (...allowed: string[]) => allowed.includes(role),
   }
 
   return <RoleContext.Provider value={value}>{children}</RoleContext.Provider>
 }
 
-export function useRole() {
+export function useRole(): RoleContextValue {
   const ctx = useContext(RoleContext)
   if (!ctx) throw new Error('useRole() harus dipakai di dalam <RoleProvider>')
   return ctx

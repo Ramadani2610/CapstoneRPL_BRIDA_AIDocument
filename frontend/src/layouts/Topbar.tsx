@@ -2,7 +2,7 @@ import { Bell, ChevronDown, ShieldCheck } from 'lucide-react'
 import { DEMO_PROFILE, ROLE_LABEL, ROLES } from '../config/roles'
 import { useRole } from '../lib/role'
 
-function initials(name) {
+function initials(name: string): string {
   return name
     .split(' ')
     .filter((part) => /^[A-Za-z]/.test(part))

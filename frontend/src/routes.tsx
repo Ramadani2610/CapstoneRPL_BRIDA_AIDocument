@@ -1,4 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom'
+import type { ReactNode } from 'react'
 import { defaultPathForRole, navByKey } from './config/navigation'
 import { useRole } from './lib/role'
 import AksesDitolakPage from './pages/AksesDitolakPage'
@@ -12,11 +13,11 @@ import RiwayatAuditPage from './pages/verifikator/riwayat'
 /*
   Daftar halaman aplikasi.
 
-  `key` harus sama dengan key di src/config/navigation.js.
-  Path dan daftar peran TIDAK ditulis ulang di sini - diambil dari navigation.js,
+  `key` harus sama dengan key di src/config/navigation.ts.
+  Path dan daftar peran TIDAK ditulis ulang di sini - diambil dari navigation.ts,
   supaya menu dan hak akses tidak pernah beda.
 
-  Menambah halaman: tambah entri di sini + di navigation.js.
+  Menambah halaman: tambah entri di sini + di navigation.ts.
 */
 export const APP_ROUTES = [
   { key: 'dashboard', element: <DashboardAdminPage /> },
@@ -28,7 +29,7 @@ export const APP_ROUTES = [
 ]
 
 // Setiap route dibungkus ini: kalau peran tidak berhak, tampilkan halaman tolak.
-export function RequireRole({ roles, children }) {
+export function RequireRole({ roles, children }: { roles: string[]; children: ReactNode }) {
   const { role } = useRole()
   if (!roles.includes(role)) {
     return <AksesDitolakPage allow={roles} />

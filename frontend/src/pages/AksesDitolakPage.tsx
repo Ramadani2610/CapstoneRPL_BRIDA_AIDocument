@@ -5,7 +5,7 @@ import { defaultPathForRole } from '../config/navigation'
 import { ROLE_LABEL } from '../config/roles'
 import { useRole } from '../lib/role'
 
-export default function AksesDitolakPage({ allow = [] }) {
+export default function AksesDitolakPage({ allow = [] }: { allow?: string[] }) {
   const { role } = useRole()
 
   return (

@@ -6,6 +6,9 @@
     info    -> "Menunggu Review"
     neutral -> keterangan umum
 */
+import type { ReactNode } from 'react'
+import type { LucideIcon } from 'lucide-react'
+
 const VARIANTS = {
   success: 'bg-emerald-100 text-emerald-700',
   warning: 'bg-orange-100 text-orange-700',
@@ -14,7 +17,15 @@ const VARIANTS = {
   neutral: 'bg-slate-100 text-slate-600',
 }
 
-export default function Badge({ variant = 'neutral', icon: Icon, children }) {
+export type BadgeVariant = keyof typeof VARIANTS
+
+interface BadgeProps {
+  variant?: BadgeVariant
+  icon?: LucideIcon
+  children: ReactNode
+}
+
+export default function Badge({ variant = 'neutral', icon: Icon, children }: BadgeProps) {
   return (
     <span
       className={

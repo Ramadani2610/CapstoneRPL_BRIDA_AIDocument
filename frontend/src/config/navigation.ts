@@ -17,7 +17,16 @@ import { ROLES } from './roles'
   Menambah menu = tambah 1 baris di sini + 1 baris di src/routes.jsx.
   Menyembunyikan menu = hapus/ubah `roles`-nya di sini saja.
 */
-export const NAV = [
+export interface NavItem {
+  key: string
+  label: string
+  path: string
+  icon: string
+  roles: string[]
+  badgeKey?: string
+}
+
+export const NAV: NavItem[] = [
   {
     key: 'dashboard',
     label: 'Dashboard',
@@ -63,15 +72,15 @@ export const NAV = [
   },
 ]
 
-export const navByKey = Object.fromEntries(NAV.map((item) => [item.key, item]))
+export const navByKey: Record<string, NavItem> = Object.fromEntries(NAV.map((item) => [item.key, item]))
 
 // Menu yang boleh dilihat oleh seorang peran.
-export function navForRole(role) {
+export function navForRole(role: string): NavItem[] {
   return NAV.filter((item) => item.roles.includes(role))
 }
 
 // Halaman pertama yang dibuka per peran.
-export function defaultPathForRole(role) {
+export function defaultPathForRole(role: string): string {
   const first = navForRole(role)[0]
   return first ? first.path : '/akses-ditolak'
 }
