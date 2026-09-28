@@ -1,11 +1,31 @@
+
+import { Route, Routes } from 'react-router-dom'
+import AppLayout from './layouts/AppLayout'
+import NotFoundPage from './pages/NotFoundPage'
+import { APP_ROUTES, HomeRedirect, RequireRole } from './routes'
+import { navByKey } from './config/navigation'
 import Login from './pages/auth/Login';
 
-function App() {
+export default function App() {
   return (
-    <div className="antialiased">
-      <Login />
-    </div>
-  );
-}
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route element={<AppLayout />}>
+        <Route index element={<HomeRedirect />} />
 
-export default App;
+        {APP_ROUTES.map(({ key, element }) => {
+          const nav = navByKey[key]
+          return (
+            <Route
+              key={key}
+              path={nav.path}
+              element={<RequireRole roles={nav.roles}>{element}</RequireRole>}
+            />
+          )
+        })}
+
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
+  )
+}

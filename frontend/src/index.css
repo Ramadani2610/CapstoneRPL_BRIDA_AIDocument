@@ -1,7 +1,32 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+@import 'tailwindcss';
+
+/*
+  Token warna sistem (Tailwind v4).
+  Ubah di sini, otomatis berubah di seluruh aplikasi.
+  Aksen utama mengikuti identitas BRIDA: maroon.
+*/
+@theme {
+  --color-brand-50: #fdecec;
+  --color-brand-100: #fbd9d9;
+  --color-brand-200: #f2b5b5;
+  --color-brand-300: #e58f8f;
+  --color-brand-400: #c9524f;
+  --color-brand-500: #a32020;
+  --color-brand-600: #8c1d1d;
+  --color-brand-700: #731717;
+  --color-brand-800: #5c1212;
+  --color-brand-900: #450e0e;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
 
 body {
-  @apply bg-gray-50 text-gray-800 antialiased;
+  margin: 0;
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
