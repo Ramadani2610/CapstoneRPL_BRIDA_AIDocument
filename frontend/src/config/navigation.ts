@@ -34,6 +34,13 @@ export const NAV: NavItem[] = [
     roles: [ROLES.ADMIN],
   },
   {
+    key: 'indikator',
+    label: 'Indikator & Parameter',
+    path: '/admin/indikator',
+    icon: 'Settings2',
+    roles: [ROLES.ADMIN],
+  },
+  {
     key: 'antrian',
     label: 'Antrian Review',
     path: '/verifikator/antrian',
@@ -60,6 +67,13 @@ export const NAV: NavItem[] = [
     label: 'Manajemen Pengguna',
     path: '/admin/pengguna',
     icon: 'Users',
+    roles: [ROLES.ADMIN],
+  },
+  {
+    key: 'log-audit',
+    label: 'Log Audit',
+    path: '/admin/log-audit',
+    icon: 'ScrollText',
     roles: [ROLES.ADMIN],
   },
   {
