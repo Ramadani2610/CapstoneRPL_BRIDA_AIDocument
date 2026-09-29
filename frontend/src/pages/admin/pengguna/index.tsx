@@ -1,11 +1,12 @@
 import PlaceholderPage from '../../../components/ui/PlaceholderPage'
 
-// MODUL: Dashboard admin (ringkasan sistem)
-export default function DashboardAdminPage() {
+// MODUL: Manajemen Pengguna (admin) - 3.2.22 sampai 3.2.25
+export default function ManajemenPenggunaPage() {
   return (
     <PlaceholderPage
-      title="Pengguna"
-      description="Manajemen pengguna sistem, termasuk pembuatan, pengeditan, dan penghapusan akun."
+      title="Manajemen Pengguna"
+      description="Daftar akun Inovator, Verifikator, dan Admin beserta perannya."
+      useCase="3.2.22 Menambah Pengguna - 3.2.25 Menghapus Pengguna"
     />
   )
 }

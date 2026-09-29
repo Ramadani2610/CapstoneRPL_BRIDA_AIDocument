@@ -6,6 +6,7 @@ export default function DashboardAdminPage() {
     <PlaceholderPage
       title="Dashboard"
       description="Ringkasan jumlah pengajuan, status verifikasi, dan ringkasan per OPD."
+      useCase="3.2.1 Melihat Ringkasan Sistem"
     />
   )
 }

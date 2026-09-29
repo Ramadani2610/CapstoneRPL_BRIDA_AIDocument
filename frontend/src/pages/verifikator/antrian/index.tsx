@@ -1,13 +1,12 @@
-//
 import PlaceholderPage from '../../../components/ui/PlaceholderPage'
 
-// MODUL: halaman "Riwayat Audit" (verifikator)
-export default function RiwayatAuditPage() {
+// MODUL: Antrian Review (verifikator) - 3.2.11 Melihat Daftar Pengajuan Inovasi
+export default function AntrianReviewPage() {
   return (
     <PlaceholderPage
-      title="Antrean "
-      description="Riwayat status dan keputusan setiap pengajuan, urut kronologis."
-      useCase="3.2.17 Menelusuri Riwayat Status dan Keputusan"
+      title="Antrian Review"
+      description="Daftar pengajuan yang menunggu ditinjau, lengkap dengan rekomendasi AI."
+      useCase="3.2.11 Melihat Daftar Pengajuan Inovasi"
     />
   )
 }
