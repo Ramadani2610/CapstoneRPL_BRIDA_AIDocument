@@ -1,11 +1,20 @@
 import { Bell, ChevronDown, ShieldCheck } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { DEMO_PROFILE, ROLE_LABEL, ROLES, initials } from '../config/roles'
+import { defaultPathForRole } from '../config/navigation'
 import { useRole } from '../lib/role'
 import briadaLogo from '../assets/images/logo-sigap.png'
 
 export default function Topbar() {
   const { role, setRole } = useRole()
+  const navigate = useNavigate()
   const profile = DEMO_PROFILE[role] ?? { name: 'Pengguna', unit: 'BRIDA Kota Makassar' }
+
+  // Langsung ke menu paling atas milik peran tersebut.
+  function switchRole(next: string) {
+    setRole(next)
+    navigate(defaultPathForRole(next), { replace: true })
+  }
 
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-line bg-white px-6">
@@ -28,7 +37,7 @@ export default function Topbar() {
             Hapus setelah autentikasi jadi. */}
         <select
           value={role}
-          onChange={(event) => setRole(event.target.value)}
+          onChange={(event) => switchRole(event.target.value)}
           title="Mode pengembangan: ganti peran untuk mencoba tampilan tiap role"
           className="rounded-md border border-dashed border-line bg-canvas px-2 py-1 text-xs text-muted"
         >
