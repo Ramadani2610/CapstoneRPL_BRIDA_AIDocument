@@ -376,6 +376,10 @@ export default function RiwayatAuditPage() {
         <p className="text-sm text-slate-500">
           Menampilkan{' '}
           <span className="font-semibold text-slate-800">
+            {paginatedData.length}
+          </span>{' '}
+          dari{' '}
+          <span className="font-semibold text-slate-800">
             {filteredData.length}
           </span>{' '}
           aktivitas
