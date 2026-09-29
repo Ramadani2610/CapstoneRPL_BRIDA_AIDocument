@@ -4,6 +4,8 @@ import {
   CircleHelp,
   FileText,
   LayoutDashboard,
+  ScrollText,
+  Settings2,
   Users,
 } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
@@ -17,6 +19,8 @@ const ICONS: Record<string, LucideIcon> = {
   ClipboardList,
   FileText,
   LayoutDashboard,
+  ScrollText,
+  Settings2,
   Users,
 }
 
