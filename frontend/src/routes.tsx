@@ -27,7 +27,6 @@ export const APP_ROUTES = [
   { key: 'riwayat', element: <RiwayatAuditPage /> },
   { key: 'pengguna', element: <ManajemenPenggunaPage /> },
   { key: 'log-audit', element: <LogAuditPage /> },
-  { key: 'inovator-dashboard', element: <DashboardInovatorPage /> },
 ]
 
 export function RequireRole({ roles, children }: { roles: string[]; children: ReactNode }) {

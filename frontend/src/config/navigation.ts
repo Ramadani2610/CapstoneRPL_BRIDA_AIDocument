@@ -57,7 +57,6 @@ export const NAV: NavItem[] = [
     roles: [ROLES.ADMIN],
   },
 
-  // Verifikator (dipakai juga oleh admin)
   {
     key: 'indikator',
     label: 'Indikator & Parameter',
@@ -65,6 +64,8 @@ export const NAV: NavItem[] = [
     icon: 'Settings2',
     roles: [ROLES.ADMIN],
   },
+
+  // Verifikator (dipakai juga oleh admin)
   {
     key: 'antrian',
     label: 'Antrian Review',
@@ -102,13 +103,6 @@ export const NAV: NavItem[] = [
     path: '/admin/log-audit',
     icon: 'ScrollText',
     roles: [ROLES.ADMIN],
-  },
-  {
-    key: 'inovator-dashboard',
-    label: 'Dashboard Pengajuan',
-    path: '/inovator/dashboard',
-    icon: 'LayoutDashboard',
-    roles: [ROLES.INOVATOR],
   },
 ]
 
