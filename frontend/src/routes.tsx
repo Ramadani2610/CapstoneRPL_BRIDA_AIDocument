@@ -4,7 +4,9 @@ import { defaultPathForRole, navByKey } from './config/navigation'
 import { useRole } from './lib/role'
 import AksesDitolakPage from './pages/AksesDitolakPage'
 import DashboardAdminPage from './pages/admin/dashboard'
+import IndikatorPage from './pages/admin/indikator'
 import ManajemenPenggunaPage from './pages/admin/pengguna'
+import LogAuditPage from './pages/admin/log-audit'
 import DashboardInovatorPage from './pages/inovator/dashboard'
 import PengajuanBaruPage from './pages/inovator/pengajuan-baru'
 import RiwayatStatusPage from './pages/inovator/riwayat'
@@ -19,11 +21,13 @@ export const APP_ROUTES = [
   { key: 'inovator-riwayat', element: <RiwayatStatusPage /> },
   // Admin
   { key: 'dashboard', element: <DashboardAdminPage /> },
-  { key: 'pengguna', element: <ManajemenPenggunaPage /> },
-  // Verifikator
+  { key: 'indikator', element: <IndikatorPage /> },
   { key: 'antrian', element: <AntrianReviewPage /> },
   { key: 'gagal-diproses', element: <GagalDiprosesPage /> },
   { key: 'riwayat', element: <RiwayatAuditPage /> },
+  { key: 'pengguna', element: <ManajemenPenggunaPage /> },
+  { key: 'log-audit', element: <LogAuditPage /> },
+  { key: 'inovator-dashboard', element: <DashboardInovatorPage /> },
 ]
 
 export function RequireRole({ roles, children }: { roles: string[]; children: ReactNode }) {

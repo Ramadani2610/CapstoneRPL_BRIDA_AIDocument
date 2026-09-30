@@ -13,18 +13,7 @@ import {
   UsersIcon,
 } from '../components/icons'
 
-/*
-  Susunan tampilan sidebar mengikuti frame "Aside" pada desain Figma:
-  - putih, lebar 256px, garis pemisah di kanan
-  - daftar menu mulai 16px dari tepi, jarak antar item 4px, tinggi item 40px
-  - item aktif: latar maroon #7a1c1c, teks putih, sudut membulat 8px
-  - kartu "Butuh bantuan?" menempel di bagian bawah sidebar
 
-  Urutan menu tetap seperti sebelumnya (lihat src/config/navigation.ts):
-  admin = Dashboard, Antrian Review, Gagal Diproses, Riwayat Audit, Manajemen Pengguna
-  verifikator = Antrian Review, Gagal Diproses, Riwayat Audit
-  inovator = Dashboard, Buat Pengajuan, Riwayat Status
-*/
 const ICONS: Record<string, ComponentType<{ className?: string }>> = {
   LayoutDashboard: GridIcon,
   FilePlus: FilePlusIcon,
