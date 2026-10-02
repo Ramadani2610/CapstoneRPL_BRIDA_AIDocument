@@ -2,16 +2,13 @@ import { Outlet } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
 
-/*
-  Kerangka aplikasi: header penuh di atas, sidebar di kiri, isi halaman di kanan.
-  Semua halaman otomatis memakai kerangka ini karena dipasang sebagai parent route
-  (lihat src/routes.jsx).
-*/
 export default function AppLayout() {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-canvas text-ink">
       <Topbar />
-      <div className="flex">
+      {/* min-h dipakai supaya sidebar tetap penuh ke bawah seperti di desain,
+          meski isi halaman hanya sebentar. */}
+      <div className="flex min-h-[calc(100vh-4rem)]">
         <Sidebar />
         <main className="min-w-0 flex-1 p-6 lg:p-8">
           <Outlet />

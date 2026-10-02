@@ -14,7 +14,6 @@ const RoleContext = createContext<RoleContextValue | null>(null)
 export function RoleProvider({ children }: { children: ReactNode }) {
   const [role, setRole] = useState<string>(() => {
     const saved = window.localStorage.getItem(STORAGE_KEY)
-    // REVISI: Kosongkan default jika tidak ada data di localStorage (jangan langsung ROLES.ADMIN)
     return saved || ''
   })
 

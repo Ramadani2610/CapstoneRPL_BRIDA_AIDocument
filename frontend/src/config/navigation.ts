@@ -1,7 +1,6 @@
 import { ROLES } from './roles'
 
 /*
-
   Isi menu diambil dari use case pada SRS:
     Dashboard          -> halaman ringkasan (admin)
     Antrian Review     -> 3.2.11 Melihat Daftar Pengajuan Inovasi
@@ -13,7 +12,7 @@ import { ROLES } from './roles'
   terasa "lengkap" tanpa perlu bikin sidebar terpisah - cukup perannya ikut
   didaftarkan di sini.
 
-  Menambah menu = tambah 1 baris di sini + 1 baris di src/routes.jsx.
+  Menambah menu = tambah 1 baris di sini + 1 baris di src/routes.tsx.
   Menyembunyikan menu = hapus/ubah `roles`-nya di sini saja.
 */
 export interface NavItem {
@@ -26,6 +25,30 @@ export interface NavItem {
 }
 
 export const NAV: NavItem[] = [
+  // Inovator
+  {
+    key: 'inovator-dashboard',
+    label: 'Dashboard',
+    path: '/inovator/dashboard',
+    icon: 'LayoutDashboard',
+    roles: [ROLES.INOVATOR],
+  },
+  {
+    key: 'inovator-pengajuan-baru',
+    label: 'Buat Pengajuan',
+    path: '/inovator/pengajuan/baru',
+    icon: 'FilePlus',
+    roles: [ROLES.INOVATOR],
+  },
+  {
+    key: 'inovator-riwayat',
+    label: 'Riwayat Status',
+    path: '/inovator/riwayat',
+    icon: 'History',
+    roles: [ROLES.INOVATOR],
+  },
+
+  // Admin
   {
     key: 'dashboard',
     label: 'Dashboard',
@@ -33,6 +56,7 @@ export const NAV: NavItem[] = [
     icon: 'LayoutDashboard',
     roles: [ROLES.ADMIN],
   },
+
   {
     key: 'indikator',
     label: 'Indikator & Parameter',
@@ -40,6 +64,8 @@ export const NAV: NavItem[] = [
     icon: 'Settings2',
     roles: [ROLES.ADMIN],
   },
+
+  // Verifikator (dipakai juga oleh admin)
   {
     key: 'antrian',
     label: 'Antrian Review',
@@ -62,6 +88,8 @@ export const NAV: NavItem[] = [
     icon: 'FileText',
     roles: [ROLES.VERIFIKATOR, ROLES.ADMIN],
   },
+
+  // Admin
   {
     key: 'pengguna',
     label: 'Manajemen Pengguna',
@@ -75,13 +103,6 @@ export const NAV: NavItem[] = [
     path: '/admin/log-audit',
     icon: 'ScrollText',
     roles: [ROLES.ADMIN],
-  },
-  {
-    key: 'inovator-dashboard',
-    label: 'Dashboard Pengajuan',
-    path: '/inovator/dashboard',
-    icon: 'LayoutDashboard',
-    roles: [ROLES.INOVATOR],
   },
 ]
 

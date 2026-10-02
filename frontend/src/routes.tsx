@@ -8,11 +8,18 @@ import IndikatorPage from './pages/admin/indikator'
 import ManajemenPenggunaPage from './pages/admin/pengguna'
 import LogAuditPage from './pages/admin/log-audit'
 import DashboardInovatorPage from './pages/inovator/dashboard'
+import PengajuanBaruPage from './pages/inovator/pengajuan-baru'
+import RiwayatStatusPage from './pages/inovator/riwayat'
 import AntrianReviewPage from './pages/verifikator/antrian'
 import GagalDiprosesPage from './pages/verifikator/gagal-diproses'
 import RiwayatAuditPage from './pages/verifikator/riwayat'
 
 export const APP_ROUTES = [
+  // Inovator
+  { key: 'inovator-dashboard', element: <DashboardInovatorPage /> },
+  { key: 'inovator-pengajuan-baru', element: <PengajuanBaruPage /> },
+  { key: 'inovator-riwayat', element: <RiwayatStatusPage /> },
+  // Admin
   { key: 'dashboard', element: <DashboardAdminPage /> },
   { key: 'indikator', element: <IndikatorPage /> },
   { key: 'antrian', element: <AntrianReviewPage /> },
@@ -20,13 +27,12 @@ export const APP_ROUTES = [
   { key: 'riwayat', element: <RiwayatAuditPage /> },
   { key: 'pengguna', element: <ManajemenPenggunaPage /> },
   { key: 'log-audit', element: <LogAuditPage /> },
-  { key: 'inovator-dashboard', element: <DashboardInovatorPage /> },
 ]
 
 export function RequireRole({ roles, children }: { roles: string[]; children: ReactNode }) {
   const { role } = useRole()
 
-  // REVISI: Jika belum login, paksa ke /login
+  // Belum login, paksa ke /login
   if (!role) {
     return <Navigate to="/login" replace />
   }
@@ -40,7 +46,6 @@ export function RequireRole({ roles, children }: { roles: string[]; children: Re
 export function HomeRedirect() {
   const { role } = useRole()
 
-  // REVISI: Jika belum login, arahkan ke /login
   if (!role) {
     return <Navigate to="/login" replace />
   }
