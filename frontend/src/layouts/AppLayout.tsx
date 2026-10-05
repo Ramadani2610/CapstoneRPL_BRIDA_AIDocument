@@ -7,13 +7,17 @@ export default function AppLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-canvas text-ink">
+    // Mengunci layar penuh dengan h-screen dan overflow-hidden
+    <div className="flex h-screen flex-col overflow-hidden bg-canvas text-ink">
+      {/* Topbar tetap di posisi atas */}
       <Topbar onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)} />
-      {/* min-h dipakai supaya sidebar tetap penuh ke bawah seperti di desain,
-          meski isi halaman hanya sebentar. */}
-      <div className="flex min-h-[calc(100vh-4rem)]">
+
+      {/* Container utama di bawah Topbar */}
+      <div className="flex flex-1 overflow-hidden">
         <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-        <main className="min-w-0 flex-1 p-6 lg:p-8">
+
+        {/* HANYA area main ini yang memiliki scrollbar */}
+        <main className="flex-1 overflow-y-auto p-6 lg:p-8">
           <Outlet />
         </main>
       </div>
