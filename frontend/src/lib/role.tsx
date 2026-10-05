@@ -13,15 +13,16 @@ const RoleContext = createContext<RoleContextValue | null>(null)
 
 export function RoleProvider({ children }: { children: ReactNode }) {
   const [role, setRole] = useState<string>(() => {
-    const saved = window.localStorage.getItem(STORAGE_KEY)
+    // Menggunakan sessionStorage agar reset saat tab ditutup
+    const saved = window.sessionStorage.getItem(STORAGE_KEY)
     return saved || ''
   })
 
   useEffect(() => {
     if (role) {
-      window.localStorage.setItem(STORAGE_KEY, role)
+      window.sessionStorage.setItem(STORAGE_KEY, role)
     } else {
-      window.localStorage.removeItem(STORAGE_KEY)
+      window.sessionStorage.removeItem(STORAGE_KEY)
     }
   }, [role])
 
