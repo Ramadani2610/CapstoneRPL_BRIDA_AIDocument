@@ -3,6 +3,7 @@ import type { Indikator } from './data'
 
 interface IndikatorDetailProps {
   indikator: Indikator | null
+  children?: React.ReactNode
   onEdit: (indikator: Indikator) => void
   onDelete: (indikator: Indikator) => void
   onTambahParameter: (indikator: Indikator) => void
@@ -10,6 +11,7 @@ interface IndikatorDetailProps {
 
 export default function IndikatorDetail({
   indikator,
+  children,
   onEdit,
   onDelete,
   onTambahParameter,
@@ -93,11 +95,13 @@ export default function IndikatorDetail({
           </button>
         </div>
 
-        <div className="rounded-lg border border-dashed border-slate-200 bg-slate-50 p-10 text-center">
-          <p className="text-sm text-slate-500">
-            Tabel parameter akan ditambahkan di langkah berikutnya.
-          </p>
-        </div>
+       {children ?? (
+         <div className="rounded-lg border border-dashed border-slate-200 bg-slate-50 p-10 text-center">
+             <p className="text-sm text-slate-500">
+                 Belum ada parameter. Klik "+ Tambah Parameter" untuk menambahkan.
+             </p>
+         </div>
+        )}
       </div>
     </div>
   )

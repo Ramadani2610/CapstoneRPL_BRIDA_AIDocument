@@ -1,30 +1,74 @@
 import { ChevronRight, Home, Plus } from 'lucide-react'
 import { useState } from 'react'
+import DeleteConfirmModal from './DeleteConfirmModal'
 import IndikatorDetail from './IndikatorDetail'
+import IndikatorFormModal, { type IndikatorFormValues } from './IndikatorFormModal'
 import IndikatorSidebar from './IndikatorSidebar'
-import { INDIKATORS, type Indikator } from './data'
+import ParameterTable from './ParameterTable'
+import { INDIKATORS, type Indikator, type Parameter } from './data'
+
+type ModalState =
+  | { kind: 'closed' }
+  | { kind: 'tambah-indikator' }
+  | { kind: 'edit-indikator'; indikator: Indikator }
+  | { kind: 'hapus-indikator'; indikator: Indikator }
+  | { kind: 'tambah-parameter'; indikator: Indikator }
+  | { kind: 'edit-parameter'; indikator: Indikator; parameter: Parameter }
+  | { kind: 'hapus-parameter'; indikator: Indikator; parameter: Parameter }
 
 export default function IndikatorPage() {
-  const [indikators] = useState<Indikator[]>(INDIKATORS)
+  const [indikators, setIndikators] = useState<Indikator[]>(INDIKATORS)
   const [selectedId, setSelectedId] = useState<string | null>(INDIKATORS[0]?.id ?? null)
+  const [modal, setModal] = useState<ModalState>({ kind: 'closed' })
 
   const selected = indikators.find((ind) => ind.id === selectedId) ?? null
 
-  // Handler placeholder — akan diimplementasikan di langkah berikutnya.
-  const handleTambahIndikator = () => {
-    // TODO: buka modal Tambah Indikator (Commit 3)
+  const handleCloseModal = () => setModal({ kind: 'closed' })
+
+  // ======== INDIKATOR CRUD ========
+  const handleOpenTambahIndikator = () => setModal({ kind: 'tambah-indikator' })
+  const handleOpenEditIndikator = (indikator: Indikator) =>
+    setModal({ kind: 'edit-indikator', indikator })
+  const handleOpenHapusIndikator = (indikator: Indikator) =>
+    setModal({ kind: 'hapus-indikator', indikator })
+
+  const handleSubmitIndikator = (data: IndikatorFormValues) => {
+    if (modal.kind === 'tambah-indikator') {
+      const newIndikator: Indikator = {
+        id: `ind-${Date.now()}`,
+        ...data,
+        parameter: [],
+      }
+      setIndikators((prev) => [...prev, newIndikator])
+      setSelectedId(newIndikator.id)
+    } else if (modal.kind === 'edit-indikator') {
+      setIndikators((prev) =>
+        prev.map((ind) => (ind.id === modal.indikator.id ? { ...ind, ...data } : ind)),
+      )
+    }
+    handleCloseModal()
   }
 
-  const handleEditIndikator = (_indikator: Indikator) => {
-    // TODO: buka modal Edit Indikator (Commit 3)
+  const handleConfirmHapusIndikator = () => {
+    if (modal.kind !== 'hapus-indikator') return
+    const deletedId = modal.indikator.id
+    setIndikators((prev) => prev.filter((ind) => ind.id !== deletedId))
+    if (selectedId === deletedId) {
+      setSelectedId(indikators.find((ind) => ind.id !== deletedId)?.id ?? null)
+    }
+    handleCloseModal()
   }
 
-  const handleDeleteIndikator = (_indikator: Indikator) => {
-    // TODO: buka modal Hapus Indikator (Commit 3)
+  // ======== PARAMETER CRUD (placeholder, implementasi di Commit 4) ========
+  const handleOpenTambahParameter = (indikator: Indikator) =>
+    setModal({ kind: 'tambah-parameter', indikator })
+  const handleOpenEditParameter = (parameter: Parameter) => {
+    if (!selected) return
+    setModal({ kind: 'edit-parameter', indikator: selected, parameter })
   }
-
-  const handleTambahParameter = (_indikator: Indikator) => {
-    // TODO: buka modal Tambah Parameter (Commit 4)
+  const handleOpenHapusParameter = (parameter: Parameter) => {
+    if (!selected) return
+    setModal({ kind: 'hapus-parameter', indikator: selected, parameter })
   }
 
   return (
@@ -43,7 +87,7 @@ export default function IndikatorPage() {
 
         <button
           type="button"
-          onClick={handleTambahIndikator}
+          onClick={handleOpenTambahIndikator}
           className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-800"
         >
           <Plus size={16} />
@@ -59,11 +103,39 @@ export default function IndikatorPage() {
         />
         <IndikatorDetail
           indikator={selected}
-          onEdit={handleEditIndikator}
-          onDelete={handleDeleteIndikator}
-          onTambahParameter={handleTambahParameter}
-        />
+          onEdit={handleOpenEditIndikator}
+          onDelete={handleOpenHapusIndikator}
+          onTambahParameter={handleOpenTambahParameter}
+        >
+          {selected ? (
+            <ParameterTable
+              parameters={selected.parameter}
+              onEdit={handleOpenEditParameter}
+              onDelete={handleOpenHapusParameter}
+            />
+          ) : null}
+        </IndikatorDetail>
       </div>
+
+      <IndikatorFormModal
+        open={modal.kind === 'tambah-indikator' || modal.kind === 'edit-indikator'}
+        mode={modal.kind === 'edit-indikator' ? 'edit' : 'tambah'}
+        initialIndikator={modal.kind === 'edit-indikator' ? modal.indikator : null}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmitIndikator}
+      />
+
+      <DeleteConfirmModal
+        open={modal.kind === 'hapus-indikator'}
+        title={
+          modal.kind === 'hapus-indikator'
+            ? `Hapus ${modal.indikator.nama}?`
+            : 'Hapus Indikator?'
+        }
+        message="Indikator beserta seluruh parameternya akan dihapus. Pengajuan yang sudah menggunakan indikator ini tidak terpengaruh."
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmHapusIndikator}
+      />
     </div>
   )
 }
