@@ -72,10 +72,9 @@
                 <span>Dashboard</span>
             </a>
 
-
             {{-- Antrian Review --}}
             <a
-                href="#"
+                href="{{ route('verifikator.antrian-review') }}"
                 class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
                     {{ request()->is('verifikator/antrian-review')
                         ? 'bg-[#7a161a] text-white'
@@ -88,77 +87,22 @@
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                 >
-                    <rect
-                        x="5"
-                        y="4"
-                        width="14"
-                        height="17"
-                        rx="2"
-                        stroke-width="1.8"
-                    />
                     <path
-                        d="M9 4.5V3h6v1.5"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                    />
-                    <path
-                        d="m8.5 12 2.2 2.2 4.8-5"
-                        stroke-width="1.8"
                         stroke-linecap="round"
                         stroke-linejoin="round"
+                        stroke-width="1.8"
+                        d="M9 5h6m-7 0a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2m-6 5l2 2 4-4"
                     />
                 </svg>
 
                 <span>Antrian Review</span>
             </a>
 
-
-            {{-- Gagal Diproses --}}
-            <a
-                href="{{ route('verifikator.gagal-diproses') }}"
-                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
-                    {{ request()->is('verifikator/gagal-diproses')
-                        ? 'bg-[#7a161a] text-white'
-                        : 'text-slate-600 hover:bg-[#FDF2F2] hover:text-[#7a161a]' }}"
-            >
-                {{-- File X --}}
-                <svg
-                    class="h-5 w-5 shrink-0"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-                        stroke-width="1.8"
-                        stroke-linejoin="round"
-                    />
-                    <path
-                        d="M14 2v6h6"
-                        stroke-width="1.8"
-                        stroke-linejoin="round"
-                    />
-                    <path
-                        d="m9 13 6 6"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                    />
-                    <path
-                        d="m15 13-6 6"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                    />
-                </svg>
-
-                <span>Gagal Diproses</span>
-            </a>
-
-
             {{-- Riwayat Audit --}}
             <a
-                href="{{ route('verifikator.riwayat') }}"
+                href="{{ route('verifikator.riwayat-audit') }}"
                 class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
-                    {{ request()->is('verifikator/riwayat')
+                    {{ request()->is('verifikator/riwayat-audit')
                         ? 'bg-[#7a161a] text-white'
                         : 'text-slate-600 hover:bg-[#FDF2F2] hover:text-[#7a161a]' }}"
             >

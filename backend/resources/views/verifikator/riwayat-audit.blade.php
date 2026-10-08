@@ -7,7 +7,7 @@
 
     {{-- Breadcrumb --}}
     <div class="flex items-center gap-2 text-sm text-slate-500">
-        <span>Antrian Review</span>
+        <span>Dashboard</span>
         <span>/</span>
         <span class="font-medium text-slate-800">
             Riwayat Audit

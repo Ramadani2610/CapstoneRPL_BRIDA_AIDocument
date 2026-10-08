@@ -7,8 +7,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/verifikator/riwayat', [VerifikatorController::class, 'riwayat'])
-    ->name('verifikator.riwayat');
+Route::get('/verifikator/dashboard', [VerifikatorController::class, 'dashboard'])
+    ->name('verifikator.dashboard');
 
-Route::get('/verifikator/gagal-diproses', [VerifikatorController::class, 'gagalDiproses'])
-    ->name('verifikator.gagal-diproses');
+Route::get('/verifikator/antrian-review', [VerifikatorController::class, 'antrianReview'])
+    ->name('verifikator.antrian-review');
+
+Route::get('/verifikator/riwayat-audit', [VerifikatorController::class, 'riwayatAudit'])
+    ->name('verifikator.riwayat-audit');

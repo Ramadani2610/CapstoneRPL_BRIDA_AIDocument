@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Gagal Diproses - SIGAP Inovasi')
+@section('title', 'Antrian Review - SIGAP Inovasi')
 
 @section('content')
 
@@ -195,7 +195,7 @@
             <span class="font-semibold text-slate-800">
                 ${failedDocuments.length}
             </span>
-            dokumen gagal diproses
+            dokumen dalam antrian review
         `;
 
         /*
@@ -475,12 +475,12 @@
             <path d="M9 20v-6h6v6" />
         </svg>
 
-        <span>Antrian Review</span>
+        <span>Dashboard</span>
 
         <span class="text-slate-300">›</span>
 
         <span class="font-medium text-slate-700">
-            Gagal Diproses
+            Antrian Review
         </span>
     </div>
 
@@ -492,15 +492,15 @@
             <h1
                 class="text-[27px] font-bold tracking-tight text-slate-900"
             >
-                Dokumen Gagal Diproses
+                Antrian Review Dokumen
             </h1>
 
             <p
                 class="mt-1.5 max-w-4xl text-[15px] leading-6 text-slate-500"
             >
-                Dokumen di bawah gagal melalui OCR atau analisis AI sehingga
-                belum memiliki rekomendasi. Proses ulang, atau minta inovator
-                mengunggah versi baru.
+                Dokumen yang memerlukan perhatian atau tindakan verifikator.
+                Tinjau kendala pemrosesan dokumen, lakukan proses ulang jika
+                memungkinkan, atau minta inovator mengunggah versi baru.
             </p>
         </div>
 
