@@ -1,10 +1,9 @@
 <aside
     id="sidebar"
-    class="w-64 shrink-0 border-r border-slate-200 bg-white"
+    class="fixed inset-y-0 left-0 z-40 w-64 -translate-x-full border-r border-slate-200 bg-white shadow-xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-64 lg:shrink-0 lg:translate-x-0 lg:shadow-none"
 >
     <div class="flex h-full flex-col">
 
-```
     {{-- Logo --}}
     <div class="flex h-16 items-center border-b border-slate-200 px-5">
         <img
@@ -21,46 +20,169 @@
         </p>
 
         <div class="space-y-1">
-
             {{-- Dashboard --}}
             <a
                 href="#"
-                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-gray-100 hover:text-[#7a161a]"
+                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                    {{ request()->is('verifikator/dashboard')
+                        ? 'bg-[#7a161a] text-white'
+                        : 'text-slate-600 hover:bg-[#FDF2F2] hover:text-[#7a161a]' }}"
             >
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                        d="M3 13h8V3H3v10zm10 8h8V3h-8v18zM3 21h8v-6H3v6z"/>
+                {{-- Dashboard / Grid --}}
+                <svg
+                    class="h-5 w-5 shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <rect
+                        x="3"
+                        y="3"
+                        width="7"
+                        height="7"
+                        rx="1"
+                        stroke-width="1.8"
+                    />
+                    <rect
+                        x="14"
+                        y="3"
+                        width="7"
+                        height="7"
+                        rx="1"
+                        stroke-width="1.8"
+                    />
+                    <rect
+                        x="3"
+                        y="14"
+                        width="7"
+                        height="7"
+                        rx="1"
+                        stroke-width="1.8"
+                    />
+                    <rect
+                        x="14"
+                        y="14"
+                        width="7"
+                        height="7"
+                        rx="1"
+                        stroke-width="1.8"
+                    />
                 </svg>
+
                 <span>Dashboard</span>
             </a>
+
 
             {{-- Antrian Review --}}
             <a
                 href="#"
-                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-gray-100 hover:text-[#7a161a]"
+                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                    {{ request()->is('verifikator/antrian-review')
+                        ? 'bg-[#7a161a] text-white'
+                        : 'text-slate-600 hover:bg-[#FDF2F2] hover:text-[#7a161a]' }}"
             >
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                        d="M9 11l3 3L22 4"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                        d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                {{-- Clipboard Check --}}
+                <svg
+                    class="h-5 w-5 shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <rect
+                        x="5"
+                        y="4"
+                        width="14"
+                        height="17"
+                        rx="2"
+                        stroke-width="1.8"
+                    />
+                    <path
+                        d="M9 4.5V3h6v1.5"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                    />
+                    <path
+                        d="m8.5 12 2.2 2.2 4.8-5"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
                 </svg>
+
                 <span>Antrian Review</span>
             </a>
+
+
+            {{-- Gagal Diproses --}}
+            <a
+                href="{{ route('verifikator.gagal-diproses') }}"
+                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                    {{ request()->is('verifikator/gagal-diproses')
+                        ? 'bg-[#7a161a] text-white'
+                        : 'text-slate-600 hover:bg-[#FDF2F2] hover:text-[#7a161a]' }}"
+            >
+                {{-- File X --}}
+                <svg
+                    class="h-5 w-5 shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"
+                    />
+                    <path
+                        d="M14 2v6h6"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"
+                    />
+                    <path
+                        d="m9 13 6 6"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                    />
+                    <path
+                        d="m15 13-6 6"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                    />
+                </svg>
+
+                <span>Gagal Diproses</span>
+            </a>
+
 
             {{-- Riwayat Audit --}}
             <a
                 href="{{ route('verifikator.riwayat') }}"
-                class="{{ request()->is('verifikator/riwayat')
-                    ? 'bg-[#7a161a] text-white'
-                    : 'text-slate-600 hover:bg-gray-100 hover:text-[#7a161a]' }}
-                flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition"
+                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                    {{ request()->is('verifikator/riwayat')
+                        ? 'bg-[#7a161a] text-white'
+                        : 'text-slate-600 hover:bg-[#FDF2F2] hover:text-[#7a161a]' }}"
             >
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                        d="M12 8v4l3 2"/>
-                    <circle cx="12" cy="12" r="9" stroke-width="1.8"/>
+                {{-- History / Clock --}}
+                <svg
+                    class="h-5 w-5 shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="9"
+                        stroke-width="1.8"
+                    />
+                    <path
+                        d="M12 7v5l3 2"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
                 </svg>
+
                 <span>Riwayat Audit</span>
             </a>
 
@@ -156,7 +278,6 @@
         </div>
     </div>
 </div>
-```
 
 </aside>
 
