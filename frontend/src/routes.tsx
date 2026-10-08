@@ -6,7 +6,6 @@ import AksesDitolakPage from './pages/AksesDitolakPage'
 import DashboardAdminPage from './pages/admin/dashboard'
 import IndikatorPage from './pages/admin/indikator'
 import ManajemenPenggunaPage from './pages/admin/pengguna'
-import LogAuditPage from './pages/admin/log-audit'
 import DashboardInovatorPage from './pages/inovator/dashboard'
 import PengajuanBaruPage from './pages/inovator/pengajuan-baru'
 import RiwayatStatusPage from './pages/inovator/riwayat'
@@ -26,7 +25,6 @@ export const APP_ROUTES = [
   { key: 'gagal-diproses', element: <GagalDiprosesPage /> },
   { key: 'riwayat', element: <RiwayatAuditPage /> },
   { key: 'pengguna', element: <ManajemenPenggunaPage /> },
-  { key: 'log-audit', element: <LogAuditPage /> },
 ]
 
 export function RequireRole({ roles, children }: { roles: string[]; children: ReactNode }) {

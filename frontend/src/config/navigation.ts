@@ -97,13 +97,6 @@ export const NAV: NavItem[] = [
     icon: 'Users',
     roles: [ROLES.ADMIN],
   },
-  {
-    key: 'log-audit',
-    label: 'Log Audit',
-    path: '/admin/log-audit',
-    icon: 'ScrollText',
-    roles: [ROLES.ADMIN],
-  },
 ]
 
 export const navByKey: Record<string, NavItem> = Object.fromEntries(NAV.map((item) => [item.key, item]))
