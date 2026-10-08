@@ -10,3 +10,5 @@ Route::get('/', function () {
 Route::get('/verifikator/riwayat', [VerifikatorController::class, 'riwayat'])
     ->name('verifikator.riwayat');
 
+Route::get('/verifikator/gagal-diproses', [VerifikatorController::class, 'gagalDiproses'])
+    ->name('verifikator.gagal-diproses');
