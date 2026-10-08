@@ -22,7 +22,7 @@
         <div class="space-y-1">
             {{-- Dashboard --}}
             <a
-                href="#"
+                href="{{ route('verifikator.dashboard') }}"
                 class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
                     {{ request()->is('verifikator/dashboard')
                         ? 'bg-[#7a161a] text-white'

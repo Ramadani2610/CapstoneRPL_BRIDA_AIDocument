@@ -1,4 +1,4 @@
-<header class="sticky top-0 z-30 h-16 shrink-0 border-b border-slate-200 bg-white">
+<header class="sticky top-0 z-50 h-16 shrink-0 border-b border-slate-200 bg-white">
     <div class="flex h-full items-center justify-between px-4 sm:px-5 lg:px-8">
 
     {{-- Kiri --}}
