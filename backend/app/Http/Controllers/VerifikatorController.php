@@ -71,7 +71,7 @@ class VerifikatorController extends Controller
             ],
         ];
 
-        return view('verifikator.antrian-review', [
+        return view('verifikator.dashboard', [
             'reviewItems' => $reviewItems,
         ]);
     }
