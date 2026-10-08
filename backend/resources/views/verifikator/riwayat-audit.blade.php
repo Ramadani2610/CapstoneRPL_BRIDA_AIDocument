@@ -164,24 +164,32 @@
         {{-- Pagination --}}
         <div
             id="paginationContainer"
-            class="hidden flex items-center justify-between border-t border-slate-200 px-5 py-4"
+            class="hidden flex flex-col gap-3 border-t border-slate-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5"
         >
+            {{-- Informasi halaman --}}
             <p class="text-sm text-slate-500">
-                Halaman
+                Menampilkan
                 <span
-                    id="currentPageText"
+                    id="paginationStart"
                     class="font-semibold text-slate-800"
-                >1</span>
+                >0</span>
+                -
+                <span
+                    id="paginationEnd"
+                    class="font-semibold text-slate-800"
+                >0</span>
                 dari
                 <span
-                    id="totalPagesText"
+                    id="paginationTotal"
                     class="font-semibold text-slate-800"
-                >1</span>
+                >0</span>
+                aktivitas
             </p>
 
+            {{-- Tombol Pagination --}}
             <div
                 id="paginationButtons"
-                class="flex items-center gap-2"
+                class="flex items-center justify-center gap-1.5"
             ></div>
         </div>
     </div>
@@ -425,13 +433,44 @@
         const buttons =
             document.getElementById('paginationButtons');
 
-        document.getElementById('currentPageText').textContent =
-            currentPage;
+        const paginationStart =
+            document.getElementById('paginationStart');
 
-        document.getElementById('totalPagesText').textContent =
-            totalPages;
+        const paginationEnd =
+            document.getElementById('paginationEnd');
 
-        // Hanya tampil kalau lebih dari 1 halaman
+        const paginationTotal =
+            document.getElementById('paginationTotal');
+
+        const filteredData = getFilteredData();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Informasi jumlah data
+        |--------------------------------------------------------------------------
+        */
+
+        const startIndex =
+            filteredData.length === 0
+                ? 0
+                : (currentPage - 1) * itemsPerPage + 1;
+
+        const endIndex =
+            Math.min(
+                currentPage * itemsPerPage,
+                filteredData.length
+            );
+
+        paginationStart.textContent = startIndex;
+        paginationEnd.textContent = endIndex;
+        paginationTotal.textContent = filteredData.length;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Hanya tampil kalau lebih dari 1 halaman
+        |--------------------------------------------------------------------------
+        */
+
         if (totalPages <= 1) {
             container.classList.add('hidden');
             return;
@@ -443,23 +482,34 @@
 
         /*
         |--------------------------------------------------------------------------
-        | Previous
+        | Tombol Sebelumnya
         |--------------------------------------------------------------------------
         */
 
-        const previousButton = document.createElement('button');
+        const previousButton =
+            document.createElement('button');
 
         previousButton.type = 'button';
-        previousButton.textContent = '← Sebelumnya';
+        previousButton.textContent = '←';
+
+        previousButton.title = 'Halaman sebelumnya';
+        previousButton.setAttribute(
+            'aria-label',
+            'Halaman sebelumnya'
+        );
 
         previousButton.className =
-            'rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-[#7F1D1D] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-slate-600';
+            'flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-600 transition hover:bg-[#7F1D1D] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-slate-600';
 
-        previousButton.disabled = currentPage === 1;
+        previousButton.disabled =
+            currentPage === 1;
 
         previousButton.addEventListener('click', () => {
+
             if (currentPage > 1) {
+
                 currentPage--;
+
                 renderTable();
             }
         });
@@ -468,49 +518,78 @@
 
         /*
         |--------------------------------------------------------------------------
-        | Page Numbers
+        | Nomor Halaman
         |--------------------------------------------------------------------------
         */
 
-        for (let page = 1; page <= totalPages; page++) {
+        for (
+            let page = 1;
+            page <= totalPages;
+            page++
+        ) {
 
-            const pageButton = document.createElement('button');
+            const pageButton =
+                document.createElement('button');
 
             pageButton.type = 'button';
+
             pageButton.textContent = page;
+
+            pageButton.setAttribute(
+                'aria-label',
+                `Halaman ${page}`
+            );
 
             pageButton.className =
                 currentPage === page
-                    ? 'h-9 min-w-9 rounded-lg bg-[#7F1D1D] px-3 text-sm font-medium text-white transition'
-                    : 'h-9 min-w-9 rounded-lg border border-slate-300 bg-white px-3 text-sm font-medium text-slate-600 transition hover:bg-[#7F1D1D] hover:text-white';
 
-            pageButton.addEventListener('click', () => {
-                currentPage = page;
-                renderTable();
-            });
+                    ? 'flex h-9 min-w-9 items-center justify-center rounded-lg bg-[#7F1D1D] px-3 text-sm font-medium text-white transition'
+
+                    : 'flex h-9 min-w-9 items-center justify-center rounded-lg border border-slate-300 bg-white px-3 text-sm font-medium text-slate-600 transition hover:bg-[#7F1D1D] hover:text-white';
+
+            pageButton.addEventListener(
+                'click',
+                () => {
+
+                    currentPage = page;
+
+                    renderTable();
+                }
+            );
 
             buttons.appendChild(pageButton);
         }
 
         /*
         |--------------------------------------------------------------------------
-        | Next
+        | Tombol Berikutnya
         |--------------------------------------------------------------------------
         */
 
-        const nextButton = document.createElement('button');
+        const nextButton =
+            document.createElement('button');
 
         nextButton.type = 'button';
-        nextButton.textContent = 'Berikutnya →';
+        nextButton.textContent = '→';
+
+        nextButton.title = 'Halaman berikutnya';
+        nextButton.setAttribute(
+            'aria-label',
+            'Halaman berikutnya'
+        );
 
         nextButton.className =
-            'rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-[#7F1D1D] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-slate-600';
+            'flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-600 transition hover:bg-[#7F1D1D] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-slate-600';
 
-        nextButton.disabled = currentPage === totalPages;
+        nextButton.disabled =
+            currentPage === totalPages;
 
         nextButton.addEventListener('click', () => {
+
             if (currentPage < totalPages) {
+
                 currentPage++;
+
                 renderTable();
             }
         });

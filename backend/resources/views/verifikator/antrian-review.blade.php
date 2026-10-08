@@ -186,10 +186,19 @@
         /*
          * Informasi jumlah data
          */
+        const endIndex = Math.min(
+            startIndex + itemsPerPage,
+            failedDocuments.length
+        );
+
         resultInfo.innerHTML = `
             Menampilkan
             <span class="font-semibold text-slate-800">
-                ${paginatedDocuments.length}
+                ${failedDocuments.length === 0 ? 0 : startIndex + 1}
+            </span>
+            -
+            <span class="font-semibold text-slate-800">
+                ${endIndex}
             </span>
             dari
             <span class="font-semibold text-slate-800">
@@ -374,14 +383,19 @@
          * Pagination
          */
         paginationInfo.innerHTML = `
-            Halaman
+            Menampilkan
             <span class="font-semibold text-slate-800">
-                ${currentPage}
+                ${failedDocuments.length === 0 ? 0 : startIndex + 1}
+            </span>
+            -
+            <span class="font-semibold text-slate-800">
+                ${endIndex}
             </span>
             dari
             <span class="font-semibold text-slate-800">
-                ${totalPages}
+                ${failedDocuments.length}
             </span>
+            dokumen dalam antrian review
         `;
 
         paginationButtons.innerHTML = `
@@ -389,9 +403,9 @@
                 type="button"
                 ${currentPage === 1 ? 'disabled' : ''}
                 onclick="goToPage(${currentPage - 1})"
-                class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-[#7F1D1D] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-slate-600"
+                class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-600 transition hover:bg-[#7F1D1D] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-slate-600"
             >
-                ← Sebelumnya
+                ←
             </button>
 
             ${Array.from(
@@ -402,20 +416,11 @@
                     page => `
                         <button
                             type="button"
-                            ${
-                                totalPages === 1
-                                    ? 'disabled'
-                                    : ''
-                            }
                             onclick="goToPage(${page})"
-                            class="h-9 min-w-9 rounded-lg px-3 text-sm font-medium transition ${
+                            class="flex h-9 min-w-9 items-center justify-center rounded-lg px-3 text-sm font-medium transition ${
                                 currentPage === page
                                     ? 'bg-[#7F1D1D] text-white'
                                     : 'border border-slate-300 bg-white text-slate-600 hover:bg-[#7F1D1D] hover:text-white'
-                            } ${
-                                totalPages === 1
-                                    ? 'cursor-default'
-                                    : ''
                             }"
                         >
                             ${page}
@@ -426,17 +431,14 @@
 
             <button
                 type="button"
-                ${
-                    currentPage === totalPages
-                        ? 'disabled'
-                        : ''
-                }
+                ${currentPage === totalPages ? 'disabled' : ''}
                 onclick="goToPage(${currentPage + 1})"
-                class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-[#7F1D1D] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-slate-600"
+                class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-600 transition hover:bg-[#7F1D1D] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-slate-600"
             >
-                Berikutnya →
+                →
             </button>
         `;
+
     }
 
     function goToPage(page) {
@@ -529,9 +531,7 @@
     ></div>
 
     {{-- Pagination --}}
-    <div
-        class="flex flex-col gap-3 border-t border-slate-200 bg-white px-5 py-4 sm:flex-row sm:items-center sm:justify-between"
-    >
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-6 py-4 border-t border-gray-100 text-xs text-gray-500">
         <p
             id="pagination-info"
             class="text-sm text-slate-500"
