@@ -25,10 +25,9 @@ const ICONS: Record<string, ComponentType<{ className?: string }>> = {
   ClipboardList: ClipboardListIcon,
   AlertTriangle: AlertCircleIcon,
   FileText: FileTextIcon,
-  ScrollText: FileTextIcon,
   Settings2: FilterIcon,
   ShieldCheck: ShieldCheckIcon,
-  UsersIcon,
+  Users: UsersIcon,
 }
 
 interface SidebarProps {
