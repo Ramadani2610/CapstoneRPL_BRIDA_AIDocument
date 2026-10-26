@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class VerifikatorController extends Controller
 {
     public function dashboard()
@@ -326,7 +324,4 @@ class VerifikatorController extends Controller
             'auditData' => $auditData,
         ]);
     }
-
-
-
 }
