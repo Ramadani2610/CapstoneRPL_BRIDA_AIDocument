@@ -4,15 +4,6 @@
 >
     <div class="flex h-full flex-col">
 
-    {{-- Logo --}}
-    <div class="flex h-16 items-center border-b border-slate-200 px-5">
-        <img
-            src="{{ asset('images/logo-brida.png') }}"
-            alt="SIGAP Inovasi"
-            class="h-10 w-auto"
-        >
-    </div>
-
     {{-- Menu --}}
     <nav class="flex-1 overflow-y-auto p-4">
         <p class="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
