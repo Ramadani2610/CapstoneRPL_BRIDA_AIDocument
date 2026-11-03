@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IndicatorPublicController;
+use App\Http\Controllers\QueueController;
+use App\Http\Controllers\EvidenceController;
 use App\Http\Controllers\SubmissionController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,5 +42,19 @@ Route::middleware('auth:sanctum')->group(function () {
         // {indicator} is the indicator KODE (21..44), not the id
         Route::get('/submissions/{submission}/parameters', [SubmissionController::class, 'parameters'])->name('submissions.parameters');
         Route::put('/submissions/{submission}/parameters/{indicator}', [SubmissionController::class, 'simpanParameter'])->name('submissions.parameters.simpan');
+
+        Route::get('/evidences/{evidence}/file', [EvidenceController::class, 'file'])->name('evidences.file');
+        Route::post('/submissions/{submission}/evidences', [EvidenceController::class, 'store'])->name('evidences.store');
+        Route::delete('/evidences/{evidence}', [EvidenceController::class, 'destroy'])->name('evidences.destroy');
+
+        Route::post('/submissions/{submission}/submit', [SubmissionController::class, 'submit'])->name('submissions.submit');
+        Route::get('/submissions/{submission}/riwayat', [SubmissionController::class, 'riwayat'])->name('submissions.riwayat');
+    });
+
+    Route::middleware('role:verifikator')->group(function () {
+        Route::get('/dashboard/verifikator', [QueueController::class, 'dashboard'])->name('verifikator.dashboard.api');
+
+        Route::get('/queue', [QueueController::class, 'index'])->name('queue.index');
+        Route::get('/queue/{submission}', [QueueController::class, 'show'])->name('queue.show');
     });
 });
