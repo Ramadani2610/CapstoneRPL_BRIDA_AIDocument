@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\IndicatorPublicController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,4 +22,8 @@ Route::post('/login', [AuthController::class, 'login'])
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('/me', [AuthController::class, 'me'])->name('auth.me');
+
+    // Read by every logged-in role
+    Route::get('/indikators', [IndicatorPublicController::class, 'index'])->name('indikators.index');
+    Route::get('/predikat', [IndicatorPublicController::class, 'predikat'])->name('predikat.index');
 });
