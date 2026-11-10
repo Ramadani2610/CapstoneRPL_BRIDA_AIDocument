@@ -15,3 +15,7 @@ Route::get('/verifikator/antrian-review', [VerifikatorController::class, 'antria
 
 Route::get('/verifikator/riwayat-audit', [VerifikatorController::class, 'riwayatAudit'])
     ->name('verifikator.riwayat-audit');
+
+Route::get('/verifikator/review/{id}', function ($id) {
+    return view('verifikator.review-detail');
+})->name('verifikator.review');

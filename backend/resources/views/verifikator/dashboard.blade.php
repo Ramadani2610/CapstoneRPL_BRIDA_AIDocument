@@ -149,7 +149,7 @@
                 <span>Perlu Dokumen Tambahan</span>
 
                 <span class="tab-count px-2 py-0.5 rounded-full text-[10px] font-semibold bg-gray-100 text-gray-600">
-                    2
+                    0
                 </span>
             </button>
 
@@ -162,7 +162,7 @@
                 <span>Selesai</span>
 
                 <span class="tab-count px-2 py-0.5 rounded-full text-[10px] font-semibold bg-gray-100 text-gray-600">
-                    3
+                    0
                 </span>
             </button>
 
@@ -378,12 +378,12 @@
                             {{-- Aksi --}}
                             <td class="py-4 px-6 text-right whitespace-nowrap">
 
-                                <button
-                                    type="button"
-                                    class="bg-[#7A1C1C] hover:bg-[#5a1414] active:bg-[#400b0d] text-white text-xs font-medium px-4 py-1.5 rounded-lg transition-colors cursor-pointer shadow-sm"
+                                <a
+                                    href="{{ url('/verifikator/review/' . $item['id']) }}"
+                                    class="inline-flex items-center justify-center bg-[#7A1C1C] hover:bg-[#5a1414] active:bg-[#400b0d] text-white text-xs font-medium px-4 py-1.5 rounded-lg transition-colors cursor-pointer shadow-sm"
                                 >
                                     Review
-                                </button>
+                                </a>
 
                             </td>
 
