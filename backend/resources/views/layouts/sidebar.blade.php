@@ -1,20 +1,11 @@
 <aside
     id="sidebar"
-    class="fixed inset-y-0 left-0 z-40 w-64 -translate-x-full border-r border-slate-200 bg-white shadow-xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-64 lg:shrink-0 lg:translate-x-0 lg:shadow-none"
+    class="fixed left-0 top-16 bottom-0 z-40 w-64 -translate-x-full border-r border-slate-200 bg-white shadow-xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-64 lg:shrink-0 lg:translate-x-0 lg:shadow-none"
 >
     <div class="flex h-full flex-col">
 
-    {{-- Logo --}}
-    <div class="flex h-16 items-center border-b border-slate-200 px-5">
-        <img
-            src="{{ asset('images/logo-brida.png') }}"
-            alt="SIGAP Inovasi"
-            class="h-10 w-auto"
-        >
-    </div>
-
     {{-- Menu --}}
-    <nav class="flex-1 overflow-y-auto p-4">
+    <nav class="flex-1 overflow-y-auto p-4 pt-6 lg:pt-6">
         <p class="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
             Verifikator
         </p>
