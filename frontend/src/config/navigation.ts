@@ -62,7 +62,7 @@ export const NAV: NavItem[] = [
     label: 'Indikator & Parameter',
     path: '/admin/indikator',
     icon: 'Settings2',
-    roles: [ROLES.ADMIN],
+    roles: [ROLES.ADMIN, ROLES.VERIFIKATOR],
   },
 
   // Verifikator (dipakai juga oleh admin)

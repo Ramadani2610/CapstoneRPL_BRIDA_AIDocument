@@ -84,8 +84,7 @@ export default function IndikatorSidebar({
                               ind.aktif ? 'bg-emerald-500' : 'bg-slate-300',
                             ].join(' ')}
                           />
-                          {ind.aktif ? 'Aktif' : 'Nonaktif'} ·{' '}
-                          {ind.parameter.length} parameter
+                          Bobot {ind.bobot} · {ind.aktif ? 'Aktif' : 'Nonaktif'}
                         </p>
                       </div>
                     </div>
