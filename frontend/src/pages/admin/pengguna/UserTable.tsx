@@ -104,7 +104,7 @@ export default function UserTable({
         </div>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="hidden overflow-x-auto lg:block">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-100 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
@@ -195,8 +195,102 @@ export default function UserTable({
         </table>
       </div>
 
+      <div className="block space-y-3 p-4 lg:hidden">
+        {filtered.length === 0 ? (
+          <p className="py-6 text-center text-sm text-slate-500">
+            Tidak ada pengguna yang cocok dengan pencarian.
+          </p>
+        ) : (
+          filtered.map((user) => (
+            <UserCard
+              key={user.id}
+              user={user}
+              onToggleActive={onToggleActive}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
+          ))
+        )}
+      </div>
+
       <div className="border-t border-slate-100 px-5 py-3 text-xs text-slate-500">
         Menampilkan {filtered.length} dari {users.length} pengguna
+      </div>
+    </div>
+  )
+}
+
+interface UserCardProps {
+  user: User
+  onToggleActive: (userId: string, nextValue: boolean) => void
+  onEdit: (user: User) => void
+  onDelete: (user: User) => void
+}
+
+function UserCard({ user, onToggleActive, onEdit, onDelete }: UserCardProps) {
+  return (
+    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="flex items-start gap-3">
+        <Avatar name={user.nama} size="md" />
+        <div className="min-w-0 flex-1">
+          <p className="font-medium text-slate-800">{user.nama}</p>
+          <p className="truncate text-xs text-slate-500">{user.email}</p>
+        </div>
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <span
+          className={[
+            'shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium',
+            ROLE_BADGE[user.peran],
+          ].join(' ')}
+        >
+          {user.peran}
+        </span>
+        <span className="min-w-0 truncate text-xs text-slate-600">{user.opd}</span>
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <Toggle
+            checked={user.aktif}
+            onChange={(next) => onToggleActive(user.id, next)}
+            size="sm"
+          />
+          <span
+            className={[
+              'text-xs font-medium',
+              user.aktif ? 'text-slate-700' : 'text-slate-400',
+            ].join(' ')}
+          >
+            {user.aktif ? 'Aktif' : 'Nonaktif'}
+          </span>
+        </div>
+        <span className="text-xs text-slate-500">
+          Login:{' '}
+          {user.loginTerakhir ?? (
+            <span className="italic text-slate-400">Belum pernah</span>
+          )}
+        </span>
+      </div>
+
+      <div className="mt-3 flex items-center justify-end gap-1 border-t border-slate-100 pt-2">
+        <button
+          type="button"
+          onClick={() => onEdit(user)}
+          className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
+          aria-label={`Edit ${user.nama}`}
+        >
+          <Pencil size={15} />
+        </button>
+        <button
+          type="button"
+          onClick={() => onDelete(user)}
+          className="rounded-lg p-2 text-slate-500 transition hover:bg-rose-50 hover:text-rose-700"
+          aria-label={`Hapus ${user.nama}`}
+        >
+          <Trash2 size={15} />
+        </button>
       </div>
     </div>
   )

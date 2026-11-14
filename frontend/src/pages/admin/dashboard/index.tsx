@@ -21,6 +21,14 @@ const BADGE_STYLE: Record<AktivitasItem['status'], string> = {
   gagal: 'bg-rose-100 text-rose-700',
 }
 
+const BREAKDOWN_TONE = {
+  default: 'text-slate-700',
+  success: 'text-emerald-600',
+  warning: 'text-amber-600',
+  danger: 'text-rose-600',
+} as const
+type BreakdownTone = keyof typeof BREAKDOWN_TONE
+
 const BADGE_LABEL: Record<AktivitasItem['status'], string> = {
   'analisis-ai': 'Analisis AI selesai',
   ocr: 'OCR selesai',
@@ -39,7 +47,7 @@ function getInitials(name: string): string {
 
 export default function DashboardAdminPage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 overflow-x-hidden">
       <Breadcrumb />
       <Heading />
 
@@ -78,20 +86,31 @@ function Heading() {
 }
 
 function KartuInovasi() {
+  const breakdown: Array<{ label: string; value: number; tone: BreakdownTone }> = [
+    { label: 'Disetujui', value: RINGKASAN_INOVASI.disetujui, tone: 'success' },
+    { label: 'Perbaikan', value: RINGKASAN_INOVASI.perbaikan, tone: 'warning' },
+    { label: 'Ditolak', value: RINGKASAN_INOVASI.ditolak, tone: 'danger' },
+    { label: 'Diproses', value: RINGKASAN_INOVASI.diproses, tone: 'default' },
+  ]
+
   return (
     <StatCard
       className="lg:col-span-2"
       title="Total Inovasi Diproses"
       value={RINGKASAN_INOVASI.totalDiproses}
       trend={`📈 ${RINGKASAN_INOVASI.pertumbuhan}`}
-      breakdown={[
-        { label: 'Disetujui', value: RINGKASAN_INOVASI.disetujui, tone: 'success' },
-        { label: 'Perbaikan', value: RINGKASAN_INOVASI.perbaikan, tone: 'warning' },
-        { label: 'Ditolak', value: RINGKASAN_INOVASI.ditolak, tone: 'danger' },
-        { label: 'Diproses', value: RINGKASAN_INOVASI.diproses },
-      ]}
     >
-      <div className="h-48 w-full">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {breakdown.map((item) => (
+          <div key={item.label} className="min-w-0 rounded-lg bg-slate-50 p-2.5">
+            <p className="truncate text-xs text-slate-500">{item.label}</p>
+            <p className={['text-lg font-semibold', BREAKDOWN_TONE[item.tone]].join(' ')}>
+              {item.value}
+            </p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 h-48 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={GRAFIK_BULANAN} margin={{ top: 20, right: 10, left: 10, bottom: 0 }}>
             <XAxis
@@ -130,12 +149,12 @@ function KartuPenggunaDanIndikator() {
         <BreakdownBar />
         <ul className="mt-3 space-y-1 text-xs text-slate-600">
           {RINGKASAN_PENGGUNA.breakdown.map((item) => (
-            <li key={item.peran} className="flex items-center justify-between">
-              <span className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-brand-600" />
-                {item.peran}
+            <li key={item.peran} className="flex items-center justify-between gap-2">
+              <span className="flex min-w-0 items-center gap-2">
+                <span className="h-2 w-2 shrink-0 rounded-full bg-brand-600" />
+                <span className="truncate">{item.peran}</span>
               </span>
-              <span className="font-medium text-slate-700">{item.jumlah}</span>
+              <span className="shrink-0 font-medium text-slate-700">{item.jumlah}</span>
             </li>
           ))}
         </ul>
@@ -193,16 +212,16 @@ function KartuShortcut() {
           to={item.href}
           className="group flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-brand-300 hover:bg-brand-50"
         >
-          <div className="rounded-xl bg-slate-100 p-3 text-slate-600 group-hover:bg-white group-hover:text-brand-700">
+          <div className="shrink-0 rounded-xl bg-slate-100 p-3 text-slate-600 group-hover:bg-white group-hover:text-brand-700">
             <item.icon size={20} />
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold text-slate-800 group-hover:text-brand-700">
               {item.title}
             </p>
-            <p className="mt-1 text-xs text-slate-500">{item.description}</p>
+            <p className="mt-1 break-words text-xs text-slate-500">{item.description}</p>
           </div>
-          <ChevronRight size={18} className="mt-2 text-slate-400" />
+          <ChevronRight size={18} className="mt-2 shrink-0 text-slate-400" />
         </Link>
       ))}
     </div>
@@ -220,7 +239,10 @@ function KartuAktivitas() {
       </div>
       <ul className="mt-4 divide-y divide-slate-100">
         {AKTIVITAS_TERBARU.map((item, index) => (
-          <li key={index} className="flex items-start gap-4 py-3">
+          <li
+            key={index}
+            className="flex flex-wrap items-start gap-3 py-3 sm:flex-nowrap sm:gap-4"
+          >
             <div className="w-20 shrink-0 text-xs text-slate-500">
               <p className="font-medium text-slate-700">{item.tanggal}</p>
               <p>{item.waktu}</p>
@@ -229,14 +251,14 @@ function KartuAktivitas() {
               {getInitials(item.aktor)}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-sm text-slate-800">
+              <p className="text-sm text-slate-800 [overflow-wrap:anywhere]">
                 <span className="font-semibold">{item.aktor}</span>
                 <span className="text-slate-500"> — {item.keterangan}</span>
               </p>
             </div>
             <span
               className={[
-                'shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium',
+                'w-full self-start rounded-full px-2.5 py-0.5 text-xs font-medium sm:ml-auto sm:w-auto sm:shrink-0',
                 BADGE_STYLE[item.status],
               ].join(' ')}
             >
