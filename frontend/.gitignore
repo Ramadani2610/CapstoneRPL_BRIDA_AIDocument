@@ -25,3 +25,6 @@ dist-ssr
 
 # Artefak TypeScript build
 *.tsbuildinfo
+
+# AI agent documentation (personal reference, not shared)
+Agents.md

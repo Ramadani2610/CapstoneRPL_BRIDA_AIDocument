@@ -62,7 +62,7 @@ export const NAV: NavItem[] = [
     label: 'Indikator & Parameter',
     path: '/admin/indikator',
     icon: 'Settings2',
-    roles: [ROLES.ADMIN],
+    roles: [ROLES.ADMIN, ROLES.VERIFIKATOR],
   },
 
   // Verifikator (dipakai juga oleh admin)
@@ -95,13 +95,6 @@ export const NAV: NavItem[] = [
     label: 'Manajemen Pengguna',
     path: '/admin/pengguna',
     icon: 'Users',
-    roles: [ROLES.ADMIN],
-  },
-  {
-    key: 'log-audit',
-    label: 'Log Audit',
-    path: '/admin/log-audit',
-    icon: 'ScrollText',
     roles: [ROLES.ADMIN],
   },
 ]
