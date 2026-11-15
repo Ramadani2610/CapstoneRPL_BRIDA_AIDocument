@@ -1,0 +1,226 @@
+@php
+    $userName = auth()->user()->name ?? 'Admin';
+    $words = preg_split('/\s+/', trim($userName));
+    $initials = count($words) >= 2
+        ? strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1))
+        : strtoupper(substr($words[0] ?? 'A', 0, 2));
+@endphp
+
+<aside
+    id="sidebar"
+    class="fixed inset-y-0 left-0 z-40 w-64 -translate-x-full border-r border-slate-200 bg-white shadow-xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-64 lg:shrink-0 lg:translate-x-0 lg:shadow-none"
+>
+    <div class="flex h-full flex-col">
+
+        {{-- Menu --}}
+        <nav class="flex-1 overflow-y-auto p-4 pt-6 lg:pt-6">
+            <p class="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Admin
+            </p>
+
+            <div class="space-y-1">
+                {{-- Dashboard --}}
+                <a
+                    href="{{ route('admin.dashboard') }}"
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                        {{ request()->is('admin/dashboard')
+                            ? 'bg-[#7a161a] text-white'
+                            : 'text-slate-600 hover:bg-[#FDF2F2] hover:text-[#7a161a]' }}"
+                >
+                    <svg
+                        class="h-5 w-5 shrink-0"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <rect x="3" y="3" width="7" height="7" rx="1" stroke-width="1.8" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" stroke-width="1.8" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" stroke-width="1.8" />
+                        <rect x="14" y="14" width="7" height="7" rx="1" stroke-width="1.8" />
+                    </svg>
+
+                    <span>Dashboard</span>
+                </a>
+
+                {{-- Indikator & Parameter --}}
+                <a
+                    href="{{ route('admin.indikator.index') }}"
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                        {{ request()->is('admin/indikator*')
+                            ? 'bg-[#7a161a] text-white'
+                            : 'text-slate-600 hover:bg-[#FDF2F2] hover:text-[#7a161a]' }}"
+                >
+                    <svg
+                        class="h-5 w-5 shrink-0"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M9 5h6m-7 0a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2"
+                        />
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M9 11h6M9 15h4"
+                        />
+                    </svg>
+
+                    <span>Indikator &amp; Parameter</span>
+                </a>
+
+                {{-- Manajemen Pengguna --}}
+                <a
+                    href="{{ route('admin.pengguna.index') }}"
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                        {{ request()->is('admin/pengguna*')
+                            ? 'bg-[#7a161a] text-white'
+                            : 'text-slate-600 hover:bg-[#FDF2F2] hover:text-[#7a161a]' }}"
+                >
+                    <svg
+                        class="h-5 w-5 shrink-0"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <circle cx="9" cy="8" r="3.5" stroke-width="1.8" />
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M3 20c0-3.314 2.686-6 6-6s6 2.686 6 6"
+                        />
+                        <circle cx="17" cy="9" r="2.5" stroke-width="1.8" />
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M21 19c0-2.21-1.79-4-4-4"
+                        />
+                    </svg>
+
+                    <span>Manajemen Pengguna</span>
+                </a>
+            </div>
+
+            <p class="mb-3 mt-8 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Lainnya
+            </p>
+
+            <div class="space-y-1">
+                {{-- Profil --}}
+                <a
+                    href="#"
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-gray-100 hover:text-[#7a161a]"
+                >
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M20 21a8 8 0 10-16 0"
+                        />
+                        <circle cx="12" cy="7" r="4" stroke-width="1.8" />
+                    </svg>
+                    <span>Profil</span>
+                </a>
+            </div>
+        </nav>
+
+        {{-- Profile + Logout --}}
+        <div class="border-t border-slate-200 p-4">
+
+            <div class="mb-3 flex items-center gap-3">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#7a161a] text-sm font-semibold text-white">
+                    {{ $initials }}
+                </div>
+
+                <div class="min-w-0">
+                    <p class="truncate text-sm font-semibold text-slate-800">
+                        {{ $userName }}
+                    </p>
+                    <p class="text-xs text-slate-500">
+                        Admin
+                    </p>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                onclick="showLogoutModal()"
+                class="flex w-full items-center justify-center gap-2 rounded-lg border border-[#7a161a] px-3 py-2 text-sm font-medium text-[#7a161a] transition hover:bg-[#7a161a] hover:text-white"
+            >
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.8"
+                        d="M15 12H3m0 0l4-4m-4 4l4 4"
+                    />
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.8"
+                        d="M15 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4"
+                    />
+                </svg>
+                Keluar
+            </button>
+        </div>
+    </div>
+
+    {{-- Logout Modal --}}
+    <div
+        id="logoutModal"
+        class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 px-4"
+    >
+        <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+
+            <h2 class="text-lg font-semibold text-slate-900">
+                Konfirmasi Keluar
+            </h2>
+
+            <p class="mt-2 text-sm leading-6 text-slate-600">
+                Apakah Anda yakin ingin keluar dari sesi aplikasi SIGAP Inovasi?
+            </p>
+
+            <div class="mt-6 flex justify-end gap-3">
+                <button
+                    type="button"
+                    onclick="hideLogoutModal()"
+                    class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                >
+                    Batal
+                </button>
+
+                <button
+                    type="button"
+                    onclick="hideLogoutModal()"
+                    class="rounded-lg bg-[#7a161a] px-4 py-2 text-sm font-medium text-white hover:bg-[#5a1013]"
+                >
+                    Ya, Keluar
+                </button>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<script>
+    function showLogoutModal() {
+        const modal = document.getElementById('logoutModal');
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function hideLogoutModal() {
+        const modal = document.getElementById('logoutModal');
+
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+</script>
