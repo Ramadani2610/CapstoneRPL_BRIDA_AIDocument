@@ -67,27 +67,25 @@
                     {{-- FIXME: logo-brida.png di-add rekan via branch feat/blade-backend; fallback ke text saat belum merged. --}}
                     <img
                         src="{{ asset('images/logo-brida.png') }}"
-                        alt="SIGAP Inovasi"
-                        class="h-8 w-auto sm:h-9"
+                        alt="Logo BRIDA Kota Makassar"
+                        class="h-8 w-auto object-contain sm:h-9"
                         onerror="this.style.display='none'; this.nextElementSibling?.classList.remove('hidden');"
                     >
                     <span class="hidden rounded-md bg-[#7a161a] px-2.5 py-1 text-sm font-bold text-white">
-                        SIGAP
-                    </span>
-
-                    <div class="hidden h-6 w-px bg-slate-200 sm:block"></div>
-
-                    <span class="hidden text-sm font-medium text-slate-500 sm:block">
-                        SIGAP Verifikasi Dokumen
+                        BRIDA
                     </span>
                 </div>
 
                 {{-- Kanan --}}
                 <div class="flex shrink-0 items-center gap-2 sm:gap-3">
 
-                    <div class="hidden rounded-full bg-[#FDF2F2] px-3 py-1.5 text-xs font-semibold text-[#7a161a] sm:block">
-                        {{ $roleLabel }}
-                    </div>
+                    <span class="hidden items-center gap-1.5 rounded-full bg-[#FDF2F2] px-3 py-1 text-xs font-medium text-[#7a161a] sm:inline-flex">
+                        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 01-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 011-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 011.52 0C14.51 3.81 17 5 19 5a1 1 0 011 1z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
+                        </svg>
+                        Administrator
+                    </span>
 
                     <button
                         type="button"
