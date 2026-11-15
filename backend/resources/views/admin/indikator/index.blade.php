@@ -63,9 +63,9 @@
                                 </span>
                                 <div class="min-w-0 flex-1">
                                     <p class="text-sm font-medium text-slate-800">{{ $ind->nama }}</p>
-                                    <p class="mt-1 text-xs text-slate-500">
-                                        Bobot {{ $ind->bobot }}
-                                        @if ($ind->wajib) · <span class="font-semibold text-rose-700">Wajib</span> @endif
+                                    <p class="mt-1 flex items-center gap-1 text-xs text-slate-500">
+                                        <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500"></span>
+                                        Bobot {{ $ind->bobot }} · Aktif
                                     </p>
                                 </div>
                             </div>
@@ -80,12 +80,13 @@
         </aside>
 
         {{-- Detail panels --}}
-        <div>
+        <div id="detailWrapper">
             @foreach ($indikators as $i => $ind)
                 <section
                     id="detail-{{ $ind->kode }}"
                     class="indikator-detail rounded-2xl border border-slate-200 bg-white {{ $i === 0 ? '' : 'hidden' }}"
                 >
+                    {{-- Header --}}
                     <div class="border-b border-slate-100 p-6">
                         <div class="mb-3 flex flex-wrap items-center gap-2">
                             <span class="rounded bg-slate-100 px-2 py-0.5 text-xs font-mono font-semibold text-slate-600">
@@ -93,11 +94,12 @@
                             </span>
                             @if ($ind->wajib)
                                 <span class="rounded-full bg-rose-50 px-2 py-0.5 text-xs font-semibold text-rose-700">
-                                    WAJIB
+                                    MANDATORY
                                 </span>
                             @endif
-                            <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
-                                Urutan {{ $ind->urutan }}
+                            <span class="flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium {{ $ind->aktif ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500' }}">
+                                <span class="h-1.5 w-1.5 rounded-full {{ $ind->aktif ? 'bg-emerald-500' : 'bg-slate-400' }}"></span>
+                                {{ $ind->aktif ? 'Aktif' : 'Nonaktif' }}
                             </span>
                         </div>
                         <h2 class="text-xl font-semibold text-slate-900">{{ $ind->nama }}</h2>
@@ -108,6 +110,7 @@
 
                     <div class="space-y-6 p-6">
 
+                        {{-- Bobot Penilaian --}}
                         <section>
                             <h3 class="mb-2 text-sm font-semibold text-slate-800">Bobot Penilaian</h3>
                             <div class="flex items-baseline gap-2 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
@@ -116,17 +119,11 @@
                             </div>
                         </section>
 
+                        {{-- Opsi Penilaian --}}
                         <section>
-                            <h3 class="mb-2 text-sm font-semibold text-slate-800">Tipe Bukti</h3>
-                            <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700">
-                                {{ strtoupper(str_replace('_', ' / ', $ind->tipe_bukti)) }}
-                            </span>
-                        </section>
-
-                        <section>
-                            <h3 class="mb-3 text-sm font-semibold text-slate-800">Tier Penilaian</h3>
+                            <h3 class="mb-3 text-sm font-semibold text-slate-800">Opsi Penilaian</h3>
                             <ul class="space-y-2">
-                                @foreach ($ind->tiers as $tier)
+                                @foreach ($ind->tiers->sortByDesc('bintang') as $tier)
                                     @php $terbaik = $tier->bintang === 3; @endphp
                                     <li class="flex items-start gap-3 rounded-lg border p-3 {{ $terbaik ? 'border-emerald-200 bg-emerald-50' : 'border-slate-200 bg-white' }}">
                                         <div class="flex shrink-0 items-center gap-0.5">
@@ -137,20 +134,64 @@
                                             @endfor
                                         </div>
                                         <div class="min-w-0 flex-1">
-                                            <p class="text-sm font-medium {{ $terbaik ? 'text-emerald-900' : 'text-slate-800' }}">{{ $tier->label }}</p>
-                                            @if ($tier->deskripsi_bukti)
-                                                <p class="mt-1 text-xs {{ $terbaik ? 'text-emerald-800' : 'text-slate-600' }} [overflow-wrap:anywhere]">
-                                                    {{ $tier->deskripsi_bukti }}
-                                                </p>
-                                            @endif
+                                            <p class="text-sm {{ $terbaik ? 'text-emerald-900' : 'text-slate-800' }}">{{ $tier->label }}</p>
                                             @if ($terbaik)
-                                                <p class="mt-1 text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Nilai terbaik</p>
+                                                <p class="mt-0.5 text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Nilai terbaik</p>
                                             @endif
                                         </div>
                                     </li>
                                 @endforeach
                             </ul>
                         </section>
+
+                        {{-- Catatan Tambahan --}}
+                        @if ($ind->catatan_tambahan)
+                            <section>
+                                <div class="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
+                                    <svg class="mt-0.5 h-5 w-5 shrink-0 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="9" stroke-width="1.8"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8h.01M11 12h1v4h1"/>
+                                    </svg>
+                                    <div>
+                                        <p class="text-sm font-semibold text-amber-900">Catatan Tambahan</p>
+                                        <p class="mt-1 text-sm text-amber-800 [overflow-wrap:anywhere]">{{ $ind->catatan_tambahan }}</p>
+                                    </div>
+                                </div>
+                            </section>
+                        @endif
+
+                        {{-- Eviden & Bukti Dukung --}}
+                        <section>
+                            <h3 class="mb-2 text-sm font-semibold text-slate-800">Eviden &amp; Bukti Dukung</h3>
+                            <div class="rounded-lg border border-slate-200 bg-white p-4">
+                                <p class="text-sm text-slate-700 [overflow-wrap:anywhere]">
+                                    {{ $ind->eviden_deskripsi }}
+                                </p>
+                                <div class="mt-3">
+                                    <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700">
+                                        {{ $ind->eviden_format }}
+                                    </span>
+                                </div>
+                            </div>
+                        </section>
+
+                        {{-- Contoh Bukti dari BRIDA --}}
+                        @if ($ind->contoh_bukti_url)
+                            <section>
+                                <h3 class="mb-2 text-sm font-semibold text-slate-800">Contoh Bukti dari BRIDA</h3>
+                                <a
+                                    href="{{ $ind->contoh_bukti_url }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex items-center gap-2 rounded-lg border border-rose-200 bg-[#FDF2F2] px-4 py-2 text-sm font-medium text-[#7a161a] transition hover:bg-rose-100"
+                                >
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                    </svg>
+                                    Lihat Contoh Bukti
+                                </a>
+                            </section>
+                        @endif
 
                     </div>
                 </section>

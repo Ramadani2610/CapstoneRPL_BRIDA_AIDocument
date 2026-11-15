@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
@@ -19,39 +20,76 @@ class AdminController extends Controller
 {
     public function dashboard(): View
     {
-        // FIXME: $stats = [ 'total_submission' => Submission::count(), 'pending_review' => Submission::whereIn('status', [...])->count(), ... ];
-        $stats = [
-            'total_submission' => 42,
-            'pending_review' => 8,
-            'approved' => 26,
-            'rejected' => 4,
-            'total_user' => 12,
-            'total_indikator' => 20,
+        // FIXME: $ringkasan_inovasi = Submission::selectRaw('count(*) as total, sum(case when status=? then 1 else 0 end) as disetujui, ...')->first();
+        $ringkasan_inovasi = [
+            'total_diproses' => 342,
+            'disetujui' => 214,
+            'perbaikan' => 71,
+            'ditolak' => 22,
+            'diproses' => 35,
+            'pertumbuhan' => '+18% dibanding semester lalu',
         ];
 
-        // FIXME: ambil 6 bulan terakhir dari Submission groupBy month + status
-        $chart_data = [
-            'labels' => ['Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov'],
-            'approved' => [12, 15, 18, 22, 19, 21],
-            'rejected' => [2, 3, 4, 2, 5, 3],
+        // FIXME: ambil 6 bulan terakhir dari Submission groupBy month
+        $grafik_bulanan = collect([
+            (object) ['bulan' => 'Apr', 'jumlah' => 38],
+            (object) ['bulan' => 'Mei', 'jumlah' => 46],
+            (object) ['bulan' => 'Jun', 'jumlah' => 52],
+            (object) ['bulan' => 'Jul', 'jumlah' => 61],
+            (object) ['bulan' => 'Agu', 'jumlah' => 67],
+            (object) ['bulan' => 'Sep', 'jumlah' => 78],
+        ]);
+
+        // FIXME: $pengguna_total = User::count(); $breakdown = User::groupBy('role')->get();
+        $ringkasan_pengguna = [
+            'total' => 148,
+            'breakdown' => [
+                ['peran' => 'Inovator', 'jumlah' => 121],
+                ['peran' => 'Verifikator', 'jumlah' => 19],
+                ['peran' => 'Admin', 'jumlah' => 8],
+            ],
+        ];
+
+        // FIXME: Indicator::where('dalam_scope', true)->count() + IndicatorTier::count() nanti.
+        $ringkasan_indikator = [
+            'aktif' => 7,
+            'total' => 8,
+            'parameter_aktif' => 21,
         ];
 
         // FIXME: $aktivitas_terbaru = AuditLog::latest()->take(5)->get();
         $aktivitas_terbaru = collect([
-            (object) ['id' => 1, 'aksi' => 'Setujui pengajuan #SUB-2024', 'user' => 'Rian Sudaryanto', 'waktu' => Carbon::now()->subMinutes(15)],
-            (object) ['id' => 2, 'aksi' => 'Tolak pengajuan #SUB-2019', 'user' => 'Rina Mariska', 'waktu' => Carbon::now()->subHours(2)],
-            (object) ['id' => 3, 'aksi' => 'Minta dokumen tambahan #SUB-2021', 'user' => 'Rian Sudaryanto', 'waktu' => Carbon::now()->subHours(5)],
-            (object) ['id' => 4, 'aksi' => 'Setujui pengajuan #SUB-2018', 'user' => 'Novi Yuliyanti', 'waktu' => Carbon::now()->subDay()],
-            (object) ['id' => 5, 'aksi' => 'Tambah akun inovator Dinas Pariwisata', 'user' => 'Administrator', 'waktu' => Carbon::now()->subDays(2)],
+            (object) ['waktu' => '09:41', 'tanggal' => '26 Sep', 'aktor' => 'SIGAP-AI', 'keterangan' => '5 dokumen dianalisis · rekomendasi Lolos (92%)', 'status' => 'analisis-ai'],
+            (object) ['waktu' => '09:38', 'tanggal' => '26 Sep', 'aktor' => 'Sistem', 'keterangan' => 'Ekstraksi teks 40 halaman · keterbacaan rata-rata 97%', 'status' => 'ocr'],
+            (object) ['waktu' => '09:35', 'tanggal' => '26 Sep', 'aktor' => 'Andi Pratama', 'keterangan' => 'Dashboard Command Center Penanganan Banjir', 'status' => 'pengajuan'],
+            (object) ['waktu' => '08:52', 'tanggal' => '26 Sep', 'aktor' => 'Nurul Hidayah', 'keterangan' => 'SK Tim Pelaksana perlu diunggah ulang dengan kualitas', 'status' => 'minta-dokumen'],
+            (object) ['waktu' => '08:47', 'tanggal' => '26 Sep', 'aktor' => 'Sistem', 'keterangan' => 'Scan_BeritaAcara_UjiCoba.pdf — OCR gagal (keterbacaan)', 'status' => 'gagal'],
         ]);
 
-        return view('admin.dashboard', compact('stats', 'chart_data', 'aktivitas_terbaru'));
+        $tanggal_ringkasan = '26 September 2026';
+
+        return view('admin.dashboard', compact(
+            'ringkasan_inovasi',
+            'grafik_bulanan',
+            'ringkasan_pengguna',
+            'ringkasan_indikator',
+            'aktivitas_terbaru',
+            'tanggal_ringkasan',
+        ));
     }
 
     public function indikator(): View
     {
-        // FIXME: $indikators = Indicator::with(['tiers' => fn ($q) => $q->where('tahun', 2026)->orderBy('bintang')])->where('tahun scope...')->orderBy('urutan')->get();
-        $indikators = $this->dummyIndikators();
+        // FIXME: $indikators = Indicator::with(['tiers' => fn ($q) => $q->where('tahun', 2026)->orderBy('bintang')])->orderBy('urutan')->get();
+        $indikators = $this->dummyIndikators()->map(function ($ind) {
+            $extra = $this->indikatorExtras()[$ind->kode] ?? [];
+            $ind->catatan_tambahan = $extra['catatan_tambahan'] ?? null;
+            $ind->contoh_bukti_url = $extra['contoh_bukti_url'] ?? null;
+            $ind->eviden_deskripsi = $extra['eviden_deskripsi'] ?? '';
+            $ind->eviden_format = $extra['eviden_format'] ?? '';
+            $ind->aktif = true;
+            return $ind;
+        });
 
         return view('admin.indikator.index', compact('indikators'));
     }
@@ -68,7 +106,44 @@ class AdminController extends Controller
             'semua' => $users->count(),
         ];
 
-        return view('admin.pengguna.index', compact('users', 'count_per_role'));
+        $opd_options = $this->opdOptions();
+        $role_options = ['admin' => 'Administrator', 'verifikator' => 'Verifikator', 'inovator' => 'Inovator'];
+
+        return view('admin.pengguna.index', compact('users', 'count_per_role', 'opd_options', 'role_options'));
+    }
+
+    public function storePengguna(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'instansi' => 'required|string|max:255',
+            'role' => 'required|in:admin,verifikator,inovator',
+            'aktif' => 'sometimes|boolean',
+        ]);
+
+        // FIXME: User::create([...$validated, 'password' => Hash::make(Str::random(16))]);
+        return back()->with('success', "Pengguna {$validated['name']} berhasil ditambahkan (dummy — perlu backend).");
+    }
+
+    public function updatePengguna(Request $request, int $id): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'instansi' => 'required|string|max:255',
+            'role' => 'required|in:admin,verifikator,inovator',
+            'aktif' => 'sometimes|boolean',
+        ]);
+
+        // FIXME: User::findOrFail($id)->update($validated);
+        return back()->with('success', "Perubahan pengguna {$validated['name']} tersimpan (dummy — perlu backend).");
+    }
+
+    public function deletePengguna(int $id): RedirectResponse
+    {
+        // FIXME: User::findOrFail($id)->delete();
+        return back()->with('success', "Pengguna #{$id} berhasil dihapus (dummy — perlu backend).");
     }
 
     public function togglePenggunaStatus(int $id): RedirectResponse
@@ -183,6 +258,146 @@ class AdminController extends Controller
                 (object) ['bintang' => 3, 'label' => 'Memenuhi 5 unsur substansi', 'deskripsi_bukti' => 'Video memenuhi 5 unsur: latar belakang, penjaringan ide, pemilihan ide, manfaat, dampak.'],
             ])],
         ]);
+    }
+
+    /**
+     * FIXME: 4 field extra berikut BELUM ADA di DB rekan.
+     * Minta rekan tambah 4 kolom via migration setelah merge:
+     *   $table->text('catatan_tambahan')->nullable();
+     *   $table->string('contoh_bukti_url')->nullable();
+     *   $table->text('eviden_deskripsi')->nullable();
+     *   $table->string('eviden_format')->nullable();
+     * Nilai diambil dari frontend/src/pages/admin/indikator/data.ts (React source of truth).
+     */
+    private function indikatorExtras(): array
+    {
+        return [
+            21 => [
+                'eviden_deskripsi' => 'PERDA atau PERKADA atau SK Kepala Daerah atau SK Kepala Perangkat Daerah serta halaman yang memuat nama inovasi yang sah dan valid pada tahun saat penerapan.',
+                'eviden_format' => 'PDF',
+                'catatan_tambahan' => 'Perangkat Daerah menurut PP 18 Tahun 2016: Sekretariat Daerah, Sekretariat DPRD, Inspektorat, Dinas, Badan, Kecamatan.',
+                'contoh_bukti_url' => 'https://example.com/bukti/regulasi-perda.pdf',
+            ],
+            22 => [
+                'eviden_deskripsi' => 'SK atau Surat Tugas yang ditetapkan oleh Kepala Daerah / Kepala Perangkat Daerah.',
+                'eviden_format' => 'PDF',
+                'contoh_bukti_url' => 'https://example.com/bukti/sdm-sk.pdf',
+            ],
+            23 => [
+                'eviden_deskripsi' => 'Dokumen anggaran yang memuat program dan kegiatan inovasi daerah sesuai dengan tahun anggaran.',
+                'eviden_format' => 'PDF',
+                'catatan_tambahan' => 'Pilih tahun anggaran yang memuat mata anggaran penerapan inovasi daerah.',
+                'contoh_bukti_url' => 'https://example.com/bukti/anggaran-dpa.pdf',
+            ],
+            24 => [
+                'eviden_deskripsi' => 'SK kegiatan / surat tugas, daftar hadir, dan undangan bimtek atau kegiatan transfer pengetahuan beserta bukti dukung frekuensi pelaksanaan bimtek.',
+                'eviden_format' => 'PDF',
+                'contoh_bukti_url' => 'https://example.com/bukti/bimtek-undangan.pdf',
+            ],
+            25 => [
+                'eviden_deskripsi' => 'Upload bab, bagian, dan halaman dokumen RKPD yang memuat inovasi daerah dalam program dan kegiatan.',
+                'eviden_format' => 'PDF',
+                'catatan_tambahan' => 'Pilih tahun RKPD yang memuat program kegiatan inovasi daerah.',
+                'contoh_bukti_url' => 'https://example.com/bukti/rkpd-integrasi.pdf',
+            ],
+            26 => [
+                'eviden_deskripsi' => 'Surat Keputusan Perangkat Daerah atau undangan rapat dalam 2 (dua) tahun terakhir.',
+                'eviden_format' => 'PDF',
+                'catatan_tambahan' => 'Unsur stakeholder meliputi: Pemerintah, Pelaku Bisnis, Komunitas, Akademisi, Media Massa, dsb.',
+                'contoh_bukti_url' => 'https://example.com/bukti/aktor-sk.pdf',
+            ],
+            27 => [
+                'eviden_deskripsi' => 'SK penetapan oleh Kepala Daerah / Kepala OPD.',
+                'eviden_format' => 'PDF',
+                'contoh_bukti_url' => 'https://example.com/bukti/pelaksana-sk.pdf',
+            ],
+            28 => [
+                'eviden_deskripsi' => 'SK/ST Tim Pengelola Penerapan Inovasi Daerah dalam 2 (dua) tahun terakhir.',
+                'eviden_format' => 'PDF',
+                'contoh_bukti_url' => 'https://example.com/bukti/jejaring-sk.pdf',
+            ],
+            29 => [
+                'eviden_deskripsi' => 'Dokumentasi dan publikasi (foto kegiatan/seminar/display pameran inovasi atau screenshot konten pada media sosial/website atau pemberitaan media massa cetak/elektronik).',
+                'eviden_format' => 'JPEG / JPG / PNG',
+                'contoh_bukti_url' => 'https://example.com/bukti/sosialisasi-media.jpg',
+            ],
+            30 => [
+                'eviden_deskripsi' => 'Dokumen manual book / buku petunjuk (PDF) atau screenshot penggunaan inovasi daerah (JPG/JPEG/PNG).',
+                'eviden_format' => 'PDF / JPG / JPEG / PNG',
+                'contoh_bukti_url' => 'https://example.com/bukti/pedoman-manual.pdf',
+            ],
+            31 => [
+                'eviden_deskripsi' => 'Buku tamu dan foto pertemuan pelayanan, picscreen email/no telp layanan, picscreen media sosial yang digunakan, picscreen aplikasi (web & android/iOS).',
+                'eviden_format' => 'JPG / JPEG / PNG / PDF',
+                'catatan_tambahan' => 'Metode layanan: Manual (tatap muka/jemput bola), Hotline (email/telepon), Media Sosial (Instagram/Facebook/WhatsApp), Layanan Online (website/aplikasi mobile).',
+                'contoh_bukti_url' => 'https://example.com/bukti/media-layanan.jpg',
+            ],
+            32 => [
+                'eviden_deskripsi' => 'SOP pelaksanaan inovasi daerah yang memuat durasi waktu layanan.',
+                'eviden_format' => 'PDF',
+                'contoh_bukti_url' => 'https://example.com/bukti/sop-layanan.pdf',
+            ],
+            33 => [
+                'eviden_deskripsi' => 'DARING: Picscreen dukungan aplikasi layanan/medsos yang terintegrasi (super apps). LURING: Dokumen program terintegrasi atau data yang sudah terintegrasi.',
+                'eviden_format' => 'PDF / JPG / PNG',
+                'contoh_bukti_url' => 'https://example.com/bukti/integrasi-portal.pdf',
+            ],
+            34 => [
+                'eviden_deskripsi' => 'Dokumen PKS/MOU/Surat Pernyataan dari Pemda yang mereplikasi / dokumen replikasi lainnya.',
+                'eviden_format' => 'PDF',
+                'contoh_bukti_url' => 'https://example.com/bukti/replikasi-mou.pdf',
+            ],
+            35 => [
+                'eviden_deskripsi' => 'Picscreen platform daring / foto / picscreen perangkat elektronik / No. telp / foto tatap muka dan foto layanan manual.',
+                'eviden_format' => 'JPG / JPEG / PNG',
+                'contoh_bukti_url' => 'https://example.com/bukti/alat-kerja.jpg',
+            ],
+            36 => [
+                'eviden_deskripsi' => 'Berupa daftar penerima manfaat inovasi (untuk layanan luring) format PDF atau screenshot jumlah pengguna/penerima manfaat (untuk layanan daring) format JPG/JPEG/PNG.',
+                'eviden_format' => 'PDF / JPG / JPEG / PNG',
+                'contoh_bukti_url' => 'https://example.com/bukti/manfaat-penerima.pdf',
+            ],
+            37 => [
+                'eviden_deskripsi' => 'Dokumen / laporan / proposal inovasi daerah yang memuat tahapan-tahapan proses dan durasi penciptaan inovasi daerah.',
+                'eviden_format' => 'PDF',
+                'contoh_bukti_url' => 'https://example.com/bukti/kecepatan-proposal.pdf',
+            ],
+            39 => [
+                'eviden_deskripsi' => 'Dokumen foto kegiatan penyelesaian pengaduan / screenshot media layanan pengaduan yang disertai dengan rekapitulasi pengaduan dan persentase rasio penyelesaian pengaduan.',
+                'eviden_format' => 'JPG / JPEG / PNG / PDF',
+                'contoh_bukti_url' => 'https://example.com/bukti/pengaduan-rekap.pdf',
+            ],
+            41 => [
+                'eviden_deskripsi' => 'Screenshot testimoni pengguna (JPEG/JPG/PNG) atau laporan survei kepuasan masyarakat / laporan hasil penelitian (PDF).',
+                'eviden_format' => 'PDF / JPG / JPEG / PNG',
+                'contoh_bukti_url' => 'https://example.com/bukti/monev-laporan.pdf',
+            ],
+            44 => [
+                'eviden_deskripsi' => 'Video penerapan inovasi dengan durasi maksimal 5 menit (MP4/MOV) atau link Google Drive / YouTube.',
+                'eviden_format' => 'MP4 / MOV / Link Drive / YouTube',
+                'catatan_tambahan' => 'Unsur video inovasi daerah meliputi: (1) Latar belakang inovasi, (2) Penjaringan ide inovasi, (3) Pemilihan ide, (4) Manfaat, (5) Dampak.',
+                'contoh_bukti_url' => 'https://www.youtube.com/watch?v=example-inovasi',
+            ],
+        ];
+    }
+
+    /** Dropdown OPD/Instansi — mirror frontend/src/pages/admin/pengguna/data.ts::OPD_OPTIONS. */
+    private function opdOptions(): array
+    {
+        return [
+            'BRIDA Kota Makassar',
+            'Dinas Komunikasi dan Informatika',
+            'Dinas Kesehatan',
+            'Dinas Pendidikan',
+            'Dinas Perhubungan',
+            'Dinas Lingkungan Hidup',
+            'Dinas Pariwisata',
+            'Dinas Sosial',
+            'BAPPEDA',
+            'Kecamatan Tamalate',
+            'Kecamatan Mariso',
+            'Kecamatan Mamajang',
+        ];
     }
 
     private function dummyUsers(): Collection
